@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/workspace-spring-tool-suite-4-4.9.0.RELEASE/eureka_server" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/workspace-spring-tool-suite-4-4.9.0.RELEASE/items" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/workspace-spring-tool-suite-4-4.9.0.RELEASE/micro-productos" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/workspace-spring-tool-suite-4-4.9.0.RELEASE/project" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/workspace-spring-tool-suite-4-4.9.0.RELEASE/schema-catalogos" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/workspace-spring-tool-suite-4-4.9.0.RELEASE/schema-categorias" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/workspace-spring-tool-suite-4-4.9.0.RELEASE/schema-productos" vcs="Git" />
+  </component>
+</project>

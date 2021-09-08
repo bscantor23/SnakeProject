@@ -1,0 +1,5 @@
+package com.schemaproductos.dao;
+
+public interface IProductosDao {
+
+}

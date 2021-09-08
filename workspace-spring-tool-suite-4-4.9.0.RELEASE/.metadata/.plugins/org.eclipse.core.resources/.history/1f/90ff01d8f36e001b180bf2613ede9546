@@ -1,0 +1,30 @@
+package com.schemacatalogos.controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.schemacatalogos.models.Catalogo;
+import com.schemacatalogos.services.ServicesCatalogo;
+
+@RestController
+@RequestMapping("/api/item")
+public class CatalogoRestController{
+
+	@Autowired
+	private ServicesCatalogo servicesCatalogo;
+	
+	@GetMapping("")
+	public List<Catalogo> listar(){
+		return servicesCatalogo.findAll();
+	}
+	
+	@GetMapping("/{id}/cantidad/{cantidad}")
+	public Catalogo detalle(@PathVariable Long id, @PathVariable Integer cantidad) {
+		return servicesCatalogo.findById(id, cantidad);
+	}
+}

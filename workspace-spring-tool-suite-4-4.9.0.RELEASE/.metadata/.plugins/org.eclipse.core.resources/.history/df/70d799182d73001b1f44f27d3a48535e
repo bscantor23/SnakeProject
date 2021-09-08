@@ -1,0 +1,5 @@
+package com.schemacatalogos.models;
+
+public class Response {
+
+}

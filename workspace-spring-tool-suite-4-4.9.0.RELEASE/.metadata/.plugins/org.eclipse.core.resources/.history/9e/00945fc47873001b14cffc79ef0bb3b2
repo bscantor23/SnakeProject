@@ -1,0 +1,19 @@
+package com.schemacatalogos.models;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Response {
+	private Long id_categoria;
+	private String nombre_categoria;
+	private String descripcion_categoria;
+	private Producto producto;
+	
+	public Response(Categoria categoria, Producto producto) {
+		this.id_categoria = categoria.getId();
+		this.nombre_categoria = categoria.getNombre();	
+		this.descripcion_categoria = categoria.getDescripcion();	
+		this.producto = producto;
+	}
+}

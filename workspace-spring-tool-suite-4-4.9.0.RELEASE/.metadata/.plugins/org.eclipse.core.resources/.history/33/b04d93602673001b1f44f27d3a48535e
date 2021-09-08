@@ -1,0 +1,34 @@
+package com.schemacategorias.implementacion;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.schemacategorias.dao.ICategoriasDao;
+import com.schemacategorias.entities.Categorias;
+import com.schemacategorias.services.IProductoServices;
+
+@Service
+public class CategoriasServices implements IProductoServices{
+
+	@Autowired
+	private ICategoriasDao productoDao;
+
+	@Transactional(readOnly = true)
+	public List<Categorias> findAll() {
+		return (List<Categorias>) productoDao.findAll();
+	}
+
+	@Transactional(readOnly = true)
+	public Optional<Categorias> findById(Long id) {
+		return productoDao.findById(id);
+	}
+	
+	@Transactional(readOnly = false)
+	public void create(Categorias producto){
+		productoDao.save(producto);
+	}
+}

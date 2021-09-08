@@ -1,0 +1,4639 @@
+--
+-- PostgreSQL database cluster dump
+--
+
+-- Started on 2021-03-03 16:52:13
+
+SET default_transaction_read_only = off;
+
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+
+--
+-- Roles
+--
+
+CREATE ROLE postgres;
+ALTER ROLE postgres WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION BYPASSRLS PASSWORD 'md52e94d0b6531f50d36be6ed3612ab45d8';
+
+
+
+
+
+
+--
+-- Databases
+--
+
+--
+-- Database "template1" dump
+--
+
+\connect template1
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.6
+-- Dumped by pg_dump version 12.4
+
+-- Started on 2021-03-03 16:52:13
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+-- Completed on 2021-03-03 16:52:15
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- Database "BD_Bogota" dump
+--
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.6
+-- Dumped by pg_dump version 12.4
+
+-- Started on 2021-03-03 16:52:15
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 2992 (class 1262 OID 16393)
+-- Name: BD_Bogota; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE "BD_Bogota" WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'Spanish_Colombia.1252' LC_CTYPE = 'Spanish_Colombia.1252';
+
+
+ALTER DATABASE "BD_Bogota" OWNER TO postgres;
+
+\connect "BD_Bogota"
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 2 (class 3079 OID 16530)
+-- Name: dblink; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS dblink WITH SCHEMA public;
+
+
+--
+-- TOC entry 2993 (class 0 OID 0)
+-- Dependencies: 2
+-- Name: EXTENSION dblink; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION dblink IS 'connect to other PostgreSQL databases from within a database';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 208 (class 1259 OID 16416)
+-- Name: autor; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.autor (
+    id integer NOT NULL,
+    nombre character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.autor OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 16414)
+-- Name: autor_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.autor_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.autor_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2994 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: autor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.autor_id_seq OWNED BY public.autor.id;
+
+
+--
+-- TOC entry 214 (class 1259 OID 16445)
+-- Name: cargo; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cargo (
+    id integer NOT NULL,
+    cod_empleado integer NOT NULL,
+    cargo character varying(75) NOT NULL
+);
+
+
+ALTER TABLE public.cargo OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 16443)
+-- Name: cargo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cargo_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cargo_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2995 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: cargo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.cargo_id_seq OWNED BY public.cargo.id;
+
+
+--
+-- TOC entry 204 (class 1259 OID 16396)
+-- Name: ciudad; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ciudad (
+    cod integer NOT NULL,
+    nombre character varying(75) NOT NULL
+);
+
+
+ALTER TABLE public.ciudad OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 16394)
+-- Name: ciudad_cod_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ciudad_cod_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ciudad_cod_seq OWNER TO postgres;
+
+--
+-- TOC entry 2996 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: ciudad_cod_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.ciudad_cod_seq OWNED BY public.ciudad.cod;
+
+
+--
+-- TOC entry 216 (class 1259 OID 16458)
+-- Name: cliente; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cliente (
+    id integer NOT NULL,
+    cod_ciudad_residencia integer NOT NULL,
+    nombre character varying(100) NOT NULL,
+    fecha_ing date NOT NULL,
+    cod_ciudad_sucursal integer NOT NULL
+);
+
+
+ALTER TABLE public.cliente OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 16456)
+-- Name: cliente_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cliente_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cliente_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2997 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: cliente_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.cliente_id_seq OWNED BY public.cliente.id;
+
+
+--
+-- TOC entry 206 (class 1259 OID 16406)
+-- Name: editorial; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.editorial (
+    nit integer NOT NULL,
+    nombre character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.editorial OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 16404)
+-- Name: editorial_nit_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.editorial_nit_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.editorial_nit_seq OWNER TO postgres;
+
+--
+-- TOC entry 2998 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: editorial_nit_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.editorial_nit_seq OWNED BY public.editorial.nit;
+
+
+--
+-- TOC entry 210 (class 1259 OID 16424)
+-- Name: empleado; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.empleado (
+    id integer NOT NULL,
+    nombre character varying(100) NOT NULL,
+    fecha_ing date NOT NULL,
+    fecha_nac date NOT NULL,
+    salario double precision NOT NULL
+);
+
+
+ALTER TABLE public.empleado OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 16422)
+-- Name: empleado_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.empleado_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.empleado_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2999 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: empleado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.empleado_id_seq OWNED BY public.empleado.id;
+
+
+--
+-- TOC entry 220 (class 1259 OID 16484)
+-- Name: libro; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.libro (
+    cod integer NOT NULL,
+    nit_editorial integer NOT NULL,
+    isbn character varying(25) NOT NULL,
+    titulo character varying(100) NOT NULL,
+    precio double precision NOT NULL,
+    num_paginas integer NOT NULL,
+    cantidad integer NOT NULL
+);
+
+
+ALTER TABLE public.libro OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 16497)
+-- Name: libro_autor; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.libro_autor (
+    id integer NOT NULL,
+    cod_libro integer NOT NULL,
+    id_autor integer NOT NULL
+);
+
+
+ALTER TABLE public.libro_autor OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 16482)
+-- Name: libro_cod_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.libro_cod_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.libro_cod_seq OWNER TO postgres;
+
+--
+-- TOC entry 3000 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: libro_cod_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.libro_cod_seq OWNED BY public.libro.cod;
+
+
+--
+-- TOC entry 223 (class 1259 OID 16514)
+-- Name: registro_compra; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.registro_compra (
+    id integer NOT NULL,
+    id_libro integer NOT NULL,
+    id_cliente integer NOT NULL,
+    fecha_compra date NOT NULL
+);
+
+
+ALTER TABLE public.registro_compra OWNER TO postgres;
+
+--
+-- TOC entry 222 (class 1259 OID 16512)
+-- Name: registro_compra_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.registro_compra_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.registro_compra_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3001 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: registro_compra_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.registro_compra_id_seq OWNED BY public.registro_compra.id;
+
+
+--
+-- TOC entry 218 (class 1259 OID 16471)
+-- Name: tel_cliente; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tel_cliente (
+    id integer NOT NULL,
+    cod_cliente integer NOT NULL,
+    telefono character varying(20) NOT NULL
+);
+
+
+ALTER TABLE public.tel_cliente OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 16469)
+-- Name: tel_cliente_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tel_cliente_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tel_cliente_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3002 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: tel_cliente_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tel_cliente_id_seq OWNED BY public.tel_cliente.id;
+
+
+--
+-- TOC entry 212 (class 1259 OID 16432)
+-- Name: tel_empleado; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tel_empleado (
+    id integer NOT NULL,
+    cod_empleado integer NOT NULL,
+    telefono character varying(20) NOT NULL
+);
+
+
+ALTER TABLE public.tel_empleado OWNER TO postgres;
+
+--
+-- TOC entry 211 (class 1259 OID 16430)
+-- Name: tel_empleado_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tel_empleado_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tel_empleado_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3003 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: tel_empleado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tel_empleado_id_seq OWNED BY public.tel_empleado.id;
+
+
+--
+-- TOC entry 2794 (class 2604 OID 16419)
+-- Name: autor id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.autor ALTER COLUMN id SET DEFAULT nextval('public.autor_id_seq'::regclass);
+
+
+--
+-- TOC entry 2797 (class 2604 OID 16448)
+-- Name: cargo id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cargo ALTER COLUMN id SET DEFAULT nextval('public.cargo_id_seq'::regclass);
+
+
+--
+-- TOC entry 2792 (class 2604 OID 16399)
+-- Name: ciudad cod; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudad ALTER COLUMN cod SET DEFAULT nextval('public.ciudad_cod_seq'::regclass);
+
+
+--
+-- TOC entry 2798 (class 2604 OID 16461)
+-- Name: cliente id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente ALTER COLUMN id SET DEFAULT nextval('public.cliente_id_seq'::regclass);
+
+
+--
+-- TOC entry 2793 (class 2604 OID 16409)
+-- Name: editorial nit; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.editorial ALTER COLUMN nit SET DEFAULT nextval('public.editorial_nit_seq'::regclass);
+
+
+--
+-- TOC entry 2795 (class 2604 OID 16427)
+-- Name: empleado id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.empleado ALTER COLUMN id SET DEFAULT nextval('public.empleado_id_seq'::regclass);
+
+
+--
+-- TOC entry 2800 (class 2604 OID 16487)
+-- Name: libro cod; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro ALTER COLUMN cod SET DEFAULT nextval('public.libro_cod_seq'::regclass);
+
+
+--
+-- TOC entry 2801 (class 2604 OID 16517)
+-- Name: registro_compra id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra ALTER COLUMN id SET DEFAULT nextval('public.registro_compra_id_seq'::regclass);
+
+
+--
+-- TOC entry 2799 (class 2604 OID 16474)
+-- Name: tel_cliente id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_cliente ALTER COLUMN id SET DEFAULT nextval('public.tel_cliente_id_seq'::regclass);
+
+
+--
+-- TOC entry 2796 (class 2604 OID 16435)
+-- Name: tel_empleado id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_empleado ALTER COLUMN id SET DEFAULT nextval('public.tel_empleado_id_seq'::regclass);
+
+
+--
+-- TOC entry 2971 (class 0 OID 16416)
+-- Dependencies: 208
+-- Data for Name: autor; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.autor (id, nombre) FROM stdin;
+1	Aguayo González\tJaime Francisco
+2	Chávez Heredia Andrea Celaya
+3	Cortés Lagunes Ruth Silvana
+4	Espejo Ramos Hansel Andres
+5	Gómez Vargas José Ignacio
+6	Delgado Barrón Luis Felipe Gonzales
+7	Guerrero Padrés Miguel Alejandro
+8	Flores Aguilar Aniyensy Sarai
+9	García Arreguín\tMontserrat Carolina
+10	González Trejo Cipriano Ariel
+\.
+
+
+--
+-- TOC entry 2977 (class 0 OID 16445)
+-- Dependencies: 214
+-- Data for Name: cargo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cargo (id, cod_empleado, cargo) FROM stdin;
+1	1	Gerente de la Sucursal
+8	8	Bibliotecario
+9	9	Analista de Ventas
+19	19	Analista de Ventas
+\.
+
+
+--
+-- TOC entry 2967 (class 0 OID 16396)
+-- Dependencies: 204
+-- Data for Name: ciudad; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ciudad (cod, nombre) FROM stdin;
+1	Bogotá D.C
+2	Medellín
+3	Cali
+4	Pasto
+5	Santa Marta
+6	Barranquilla
+7	Rioacha
+8	Cartagena
+9	Puerto Lopez
+10	Boyacá
+11	Villavicencio
+12	Chocó
+13	Pereira
+14	Tolima
+15	Huila
+16	Meta
+\.
+
+
+--
+-- TOC entry 2979 (class 0 OID 16458)
+-- Dependencies: 216
+-- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cliente (id, cod_ciudad_residencia, nombre, fecha_ing, cod_ciudad_sucursal) FROM stdin;
+1	1	Adriana Carolina Hernandez Monte	2021-01-08	1
+2	5	Carol Ruchina Gomez Gianine	2021-02-16	5
+3	9	Carolina Pintor Pinzonni	2020-01-19	2
+4	3	Fabian Andres Fino Andrade	2020-09-02	1
+5	9	Jorge Esteban Rey Boteron	2021-01-12	7
+6	7	Camilo Jimenez Cortes	2020-12-01	4
+7	4	Margarita Perez Moreno	2020-11-03	4
+8	3	Paola Andrea Correa Lariosa	2021-02-04	3
+9	8	Rocio Guerrero Penagosa	2021-02-12	1
+16	8	Yiriam Liliam Ochoa Saboga	2020-12-29	8
+17	8	Natalia Puentes Perdomo 	2021-01-26	8
+18	4	Juan Camilo Jimenez Cortes	2020-12-01	1
+19	7	Jenny Viviana Moncaleano	2021-01-30	7
+20	7	Claudia Liliana Torres	2020-10-25	7
+22	5	Hugo Andrés Scamargo Vargas	2021-02-02	1
+27	3	Brayan Steban Cantor Munevar	2020-12-05	3
+28	6	Leonardo Aponte Quevedo	2021-02-16	6
+29	8	Daniela Lopez Arenas	2021-02-20	8
+30	2	Mike Poveda Anderson	2021-01-27	2
+10	4	Ricardo Vega Zambrano	2021-01-15	1
+15	3	Olga Vivianao Valle Solanoni	2021-01-19	1
+11	5	Yurany Catalina Cifuentes Mendez	2020-12-02	2
+14	1	Yiriam Liliam Ochoa Sabogal	2021-02-01	2
+21	4	Patricia Mendoza Alvearni	2020-11-23	2
+23	5	Ivonne Jouliette Barrera Lopez	2021-02-09	4
+12	5	Natalia Buitrago Contreras	2020-11-02	5
+13	1	Sandra Ximena Garcés	2020-10-08	5
+24	6	Laura Catalina Varon Buitragoni	2020-12-12	6
+25	1	Gabriel Mauricio Noeto Bustos	2020-11-30	7
+26	3	Daniela Hernández Bravoni	2020-11-30	7
+\.
+
+
+--
+-- TOC entry 2969 (class 0 OID 16406)
+-- Dependencies: 206
+-- Data for Name: editorial; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.editorial (nit, nombre) FROM stdin;
+90103044	Acantilado
+80341823	Aguilar
+94853043	Valdemar
+70489529	Planeta
+85024383	Olañeta
+\.
+
+
+--
+-- TOC entry 2973 (class 0 OID 16424)
+-- Dependencies: 210
+-- Data for Name: empleado; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.empleado (id, nombre, fecha_ing, fecha_nac, salario) FROM stdin;
+1	Karen Hernandez Trujillo	2014-06-10	1986-01-23	2100000
+8	Morales Gonzalez Diana Laura	2016-10-03	1986-12-18	5000000
+9	Moreno Chávez\tYaír Jofrá	2012-07-01	1996-10-13	4800000
+19	Reyes Saldaña\tEsteban	2009-02-05	1982-03-28	3500000
+\.
+
+
+--
+-- TOC entry 2983 (class 0 OID 16484)
+-- Dependencies: 220
+-- Data for Name: libro; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.libro (cod, nit_editorial, isbn, titulo, precio, num_paginas, cantidad) FROM stdin;
+1	94853043	978-3-16-148410-0	Luces de bohemia	39000	89	23
+2	94853043	435-6-148410-0	Crimen y castigo	42000	89	20
+3	94853043	432-6-148410-0	100 años de Soledad	30000	89	34
+4	94853043	543-6-148410-0	La casa de los espíritus	28000	89	30
+5	94853043	786-6-148410-0	Preludio a la fundación	19000	89	40
+6	90103044	345-6-148410-0	Las almas muertas	50000	89	43
+7	70489529	321-6-148410-0	La comedia humana	55000	89	23
+8	90103044	956-6-148410-0	Cumbres borrascosas	56000	89	12
+9	90103044	534-6-148410-0	La muerte de Artemio Cruz	100000	89	62
+10	80341823	654-6-148410-0	Fahrenheit 451	102000	89	5
+11	70489529	423-6-148410-0	El Buscón	89000	89	19
+12	90103044	906-6-148410-0	Rojo y negro	92000	89	20
+13	80341823	653-6-148410-0	En el camino	65000	89	20
+14	70489529	765-6-148410-0	El extranjero	78000	89	20
+15	90103044	453-6-148410-0	Drácula	45000	89	25
+16	70489529	972-3-16-148410-0	1984	76000	89	30
+17	90103044	954-3-16-148410-0	Cuentos	45000	89	30
+18	80341823	912-3-16-148410-0	Trópico de cáncer	54000	89	30
+19	94853043	431-3-16-148410-0	2666	32000	89	45
+20	90103044	643-3-16-148410-0	Ensayo sobre la ceguera	65000	89	49
+21	85024383	645-3-16-148410-0	La divina comedia	45000	89	12
+23	80341823	234-3-16-148410-0	La tierra baldías	20000	89	10
+24	94853043	674-3-16-148410-0	La insoportable levedad del ser	40000	89	10
+25	70489529	102-3-16-148410-0	Don Quijote de la mancha	42000	89	10
+26	85024383	154-3-16-148410-0	El gran Gatsby	39000	89	12
+27	80341823	265-3-16-148410-0	Yo, Claudio	38000	89	15
+28	90103044	949-3-16-148410-0	El guardián entre el centeno	32000	89	23
+29	70489529	999-3-16-148410-0	La metamorfosis	36000	89	32
+30	94853043	998-3-16-148410-0	Poesías completas	42000	89	43
+22	70489529	865-3-16-148410-0	La colmena	23000	89	23
+\.
+
+
+--
+-- TOC entry 2984 (class 0 OID 16497)
+-- Dependencies: 221
+-- Data for Name: libro_autor; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.libro_autor (id, cod_libro, id_autor) FROM stdin;
+1	1	1
+2	2	2
+3	3	3
+4	4	4
+5	5	5
+6	6	6
+7	7	1
+8	8	1
+9	9	1
+10	10	4
+11	11	4
+12	12	5
+13	13	3
+14	14	3
+15	15	3
+16	16	7
+17	17	7
+18	18	9
+19	19	9
+20	20	4
+21	21	4
+22	22	10
+23	23	10
+24	24	9
+25	25	6
+26	26	6
+27	27	3
+28	28	2
+29	29	1
+30	30	1
+\.
+
+
+--
+-- TOC entry 2986 (class 0 OID 16514)
+-- Dependencies: 223
+-- Data for Name: registro_compra; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.registro_compra (id, id_libro, id_cliente, fecha_compra) FROM stdin;
+1	1	1	2020-12-13
+2	20	5	2020-12-13
+3	21	5	2020-12-05
+4	5	10	2020-12-03
+5	19	2	2020-12-17
+6	20	1	2020-12-11
+9	7	8	2020-12-18
+10	7	19	2020-12-30
+11	9	23	2020-12-31
+12	15	27	2020-12-25
+13	18	29	2020-12-11
+14	21	29	2020-12-08
+15	28	3	2020-12-06
+16	30	15	2020-12-18
+18	24	1	2020-12-09
+19	10	1	2020-12-13
+20	10	17	2020-12-06
+21	1	15	2021-01-15
+22	1	4	2021-01-13
+23	5	8	2021-01-12
+27	20	2	2021-01-19
+28	29	12	2021-01-11
+31	30	20	2021-01-19
+32	16	21	2021-01-12
+33	26	25	2021-01-14
+34	13	19	2021-01-13
+35	16	25	2021-01-31
+36	16	23	2021-01-20
+37	13	27	2021-01-30
+38	11	29	2021-01-31
+39	10	12	2021-01-28
+40	5	27	2021-01-28
+41	5	15	2021-01-24
+42	24	13	2021-01-21
+43	20	15	2021-01-21
+44	30	4	2021-01-18
+48	23	16	2020-10-08
+49	28	13	2021-01-02
+50	19	12	2021-01-11
+\.
+
+
+--
+-- TOC entry 2981 (class 0 OID 16471)
+-- Dependencies: 218
+-- Data for Name: tel_cliente; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tel_cliente (id, cod_cliente, telefono) FROM stdin;
+1	1	3129687305
+2	2	3218593521
+3	3	3285749263
+4	4	3857389296
+5	5	3452534223
+6	6	3765344536
+7	7	3547343333
+8	8	3463456735
+9	9	3234213534
+10	10	3534234223
+11	11	3745643335
+12	12	3342345233
+13	13	3389070965
+14	14	3424523323
+15	15	3123321412
+16	16	3163425322
+17	17	3154334234
+18	18	3125345233
+19	19	3189073498
+20	20	3180974307
+21	21	3013489758
+22	22	3894735029
+23	23	3189730512
+24	24	3189237432
+25	25	3128930748
+26	26	3153789249
+27	27	3214523454
+28	28	3284353454
+29	29	3857654745
+30	30	3165745645
+\.
+
+
+--
+-- TOC entry 2975 (class 0 OID 16432)
+-- Dependencies: 212
+-- Data for Name: tel_empleado; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tel_empleado (id, cod_empleado, telefono) FROM stdin;
+1	1	3129687305
+6	19	3452346223
+\.
+
+
+--
+-- TOC entry 3004 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: autor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.autor_id_seq', 1, false);
+
+
+--
+-- TOC entry 3005 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: cargo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cargo_id_seq', 1, true);
+
+
+--
+-- TOC entry 3006 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: ciudad_cod_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.ciudad_cod_seq', 1, false);
+
+
+--
+-- TOC entry 3007 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: cliente_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cliente_id_seq', 1, false);
+
+
+--
+-- TOC entry 3008 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: editorial_nit_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.editorial_nit_seq', 1, false);
+
+
+--
+-- TOC entry 3009 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: empleado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.empleado_id_seq', 1, false);
+
+
+--
+-- TOC entry 3010 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: libro_cod_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.libro_cod_seq', 1, false);
+
+
+--
+-- TOC entry 3011 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: registro_compra_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.registro_compra_id_seq', 1, true);
+
+
+--
+-- TOC entry 3012 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: tel_cliente_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tel_cliente_id_seq', 1, false);
+
+
+--
+-- TOC entry 3013 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: tel_empleado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tel_empleado_id_seq', 1, false);
+
+
+--
+-- TOC entry 2811 (class 2606 OID 16421)
+-- Name: autor autor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.autor
+    ADD CONSTRAINT autor_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2817 (class 2606 OID 16450)
+-- Name: cargo cargo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cargo
+    ADD CONSTRAINT cargo_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2803 (class 2606 OID 16403)
+-- Name: ciudad ciudad_nombre_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudad
+    ADD CONSTRAINT ciudad_nombre_key UNIQUE (nombre);
+
+
+--
+-- TOC entry 2805 (class 2606 OID 16401)
+-- Name: ciudad ciudad_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudad
+    ADD CONSTRAINT ciudad_pkey PRIMARY KEY (cod);
+
+
+--
+-- TOC entry 2819 (class 2606 OID 16463)
+-- Name: cliente cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente
+    ADD CONSTRAINT cliente_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2807 (class 2606 OID 16413)
+-- Name: editorial editorial_nombre_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.editorial
+    ADD CONSTRAINT editorial_nombre_key UNIQUE (nombre);
+
+
+--
+-- TOC entry 2809 (class 2606 OID 16411)
+-- Name: editorial editorial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.editorial
+    ADD CONSTRAINT editorial_pkey PRIMARY KEY (nit);
+
+
+--
+-- TOC entry 2813 (class 2606 OID 16429)
+-- Name: empleado empleado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.empleado
+    ADD CONSTRAINT empleado_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2827 (class 2606 OID 16501)
+-- Name: libro_autor libro_autor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro_autor
+    ADD CONSTRAINT libro_autor_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2823 (class 2606 OID 16491)
+-- Name: libro libro_isbn_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro
+    ADD CONSTRAINT libro_isbn_key UNIQUE (isbn);
+
+
+--
+-- TOC entry 2825 (class 2606 OID 16489)
+-- Name: libro libro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro
+    ADD CONSTRAINT libro_pkey PRIMARY KEY (cod);
+
+
+--
+-- TOC entry 2829 (class 2606 OID 16519)
+-- Name: registro_compra registro_compra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra
+    ADD CONSTRAINT registro_compra_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2821 (class 2606 OID 16476)
+-- Name: tel_cliente tel_cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_cliente
+    ADD CONSTRAINT tel_cliente_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2815 (class 2606 OID 16437)
+-- Name: tel_empleado tel_empleado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_empleado
+    ADD CONSTRAINT tel_empleado_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2831 (class 2606 OID 16451)
+-- Name: cargo cargo_cod_empleado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cargo
+    ADD CONSTRAINT cargo_cod_empleado_fkey FOREIGN KEY (cod_empleado) REFERENCES public.empleado(id);
+
+
+--
+-- TOC entry 2832 (class 2606 OID 16464)
+-- Name: cliente cliente_cod_ciudad_residencia_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente
+    ADD CONSTRAINT cliente_cod_ciudad_residencia_fkey FOREIGN KEY (cod_ciudad_residencia) REFERENCES public.ciudad(cod);
+
+
+--
+-- TOC entry 2833 (class 2606 OID 17130)
+-- Name: cliente fk_cliente_ciudad_sucursal; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente
+    ADD CONSTRAINT fk_cliente_ciudad_sucursal FOREIGN KEY (cod_ciudad_sucursal) REFERENCES public.ciudad(cod);
+
+
+--
+-- TOC entry 2836 (class 2606 OID 16502)
+-- Name: libro_autor libro_autor_cod_libro_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro_autor
+    ADD CONSTRAINT libro_autor_cod_libro_fkey FOREIGN KEY (cod_libro) REFERENCES public.libro(cod);
+
+
+--
+-- TOC entry 2837 (class 2606 OID 16507)
+-- Name: libro_autor libro_autor_id_autor_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro_autor
+    ADD CONSTRAINT libro_autor_id_autor_fkey FOREIGN KEY (id_autor) REFERENCES public.autor(id);
+
+
+--
+-- TOC entry 2835 (class 2606 OID 16492)
+-- Name: libro libro_nit_editorial_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro
+    ADD CONSTRAINT libro_nit_editorial_fkey FOREIGN KEY (nit_editorial) REFERENCES public.editorial(nit);
+
+
+--
+-- TOC entry 2839 (class 2606 OID 16525)
+-- Name: registro_compra registro_compra_id_cliente_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra
+    ADD CONSTRAINT registro_compra_id_cliente_fkey FOREIGN KEY (id_cliente) REFERENCES public.cliente(id);
+
+
+--
+-- TOC entry 2838 (class 2606 OID 16520)
+-- Name: registro_compra registro_compra_id_libro_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra
+    ADD CONSTRAINT registro_compra_id_libro_fkey FOREIGN KEY (id_libro) REFERENCES public.libro(cod);
+
+
+--
+-- TOC entry 2834 (class 2606 OID 16477)
+-- Name: tel_cliente tel_cliente_cod_cliente_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_cliente
+    ADD CONSTRAINT tel_cliente_cod_cliente_fkey FOREIGN KEY (cod_cliente) REFERENCES public.cliente(id);
+
+
+--
+-- TOC entry 2830 (class 2606 OID 16438)
+-- Name: tel_empleado tel_empleado_cod_empleado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_empleado
+    ADD CONSTRAINT tel_empleado_cod_empleado_fkey FOREIGN KEY (cod_empleado) REFERENCES public.empleado(id);
+
+
+-- Completed on 2021-03-03 16:52:23
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- Database "BD_Cali" dump
+--
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.6
+-- Dumped by pg_dump version 12.4
+
+-- Started on 2021-03-03 16:52:23
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 2992 (class 1262 OID 16763)
+-- Name: BD_Cali; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE "BD_Cali" WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'Spanish_Colombia.1252' LC_CTYPE = 'Spanish_Colombia.1252';
+
+
+ALTER DATABASE "BD_Cali" OWNER TO postgres;
+
+\connect "BD_Cali"
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 2 (class 3079 OID 16900)
+-- Name: dblink; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS dblink WITH SCHEMA public;
+
+
+--
+-- TOC entry 2993 (class 0 OID 0)
+-- Dependencies: 2
+-- Name: EXTENSION dblink; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION dblink IS 'connect to other PostgreSQL databases from within a database';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 208 (class 1259 OID 16786)
+-- Name: autor; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.autor (
+    id integer NOT NULL,
+    nombre character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.autor OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 16784)
+-- Name: autor_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.autor_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.autor_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2994 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: autor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.autor_id_seq OWNED BY public.autor.id;
+
+
+--
+-- TOC entry 214 (class 1259 OID 16815)
+-- Name: cargo; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cargo (
+    id integer NOT NULL,
+    cod_empleado integer NOT NULL,
+    cargo character varying(75) NOT NULL
+);
+
+
+ALTER TABLE public.cargo OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 16813)
+-- Name: cargo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cargo_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cargo_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2995 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: cargo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.cargo_id_seq OWNED BY public.cargo.id;
+
+
+--
+-- TOC entry 204 (class 1259 OID 16766)
+-- Name: ciudad; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ciudad (
+    cod integer NOT NULL,
+    nombre character varying(75) NOT NULL
+);
+
+
+ALTER TABLE public.ciudad OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 16764)
+-- Name: ciudad_cod_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ciudad_cod_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ciudad_cod_seq OWNER TO postgres;
+
+--
+-- TOC entry 2996 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: ciudad_cod_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.ciudad_cod_seq OWNED BY public.ciudad.cod;
+
+
+--
+-- TOC entry 216 (class 1259 OID 16828)
+-- Name: cliente; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cliente (
+    id integer NOT NULL,
+    cod_ciudad_residencia integer NOT NULL,
+    nombre character varying(100) NOT NULL,
+    fecha_ing date NOT NULL,
+    cod_ciudad_sucursal integer NOT NULL
+);
+
+
+ALTER TABLE public.cliente OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 16826)
+-- Name: cliente_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cliente_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cliente_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2997 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: cliente_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.cliente_id_seq OWNED BY public.cliente.id;
+
+
+--
+-- TOC entry 206 (class 1259 OID 16776)
+-- Name: editorial; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.editorial (
+    nit integer NOT NULL,
+    nombre character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.editorial OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 16774)
+-- Name: editorial_nit_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.editorial_nit_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.editorial_nit_seq OWNER TO postgres;
+
+--
+-- TOC entry 2998 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: editorial_nit_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.editorial_nit_seq OWNED BY public.editorial.nit;
+
+
+--
+-- TOC entry 210 (class 1259 OID 16794)
+-- Name: empleado; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.empleado (
+    id integer NOT NULL,
+    nombre character varying(100) NOT NULL,
+    fecha_ing date NOT NULL,
+    fecha_nac date NOT NULL,
+    salario double precision NOT NULL
+);
+
+
+ALTER TABLE public.empleado OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 16792)
+-- Name: empleado_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.empleado_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.empleado_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2999 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: empleado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.empleado_id_seq OWNED BY public.empleado.id;
+
+
+--
+-- TOC entry 220 (class 1259 OID 16854)
+-- Name: libro; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.libro (
+    cod integer NOT NULL,
+    nit_editorial integer NOT NULL,
+    isbn character varying(25) NOT NULL,
+    titulo character varying(100) NOT NULL,
+    precio double precision NOT NULL,
+    num_paginas integer NOT NULL,
+    cantidad integer NOT NULL
+);
+
+
+ALTER TABLE public.libro OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 16867)
+-- Name: libro_autor; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.libro_autor (
+    id integer NOT NULL,
+    cod_libro integer NOT NULL,
+    id_autor integer NOT NULL
+);
+
+
+ALTER TABLE public.libro_autor OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 16852)
+-- Name: libro_cod_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.libro_cod_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.libro_cod_seq OWNER TO postgres;
+
+--
+-- TOC entry 3000 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: libro_cod_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.libro_cod_seq OWNED BY public.libro.cod;
+
+
+--
+-- TOC entry 223 (class 1259 OID 16884)
+-- Name: registro_compra; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.registro_compra (
+    id integer NOT NULL,
+    id_libro integer NOT NULL,
+    id_cliente integer NOT NULL,
+    fecha_compra date NOT NULL
+);
+
+
+ALTER TABLE public.registro_compra OWNER TO postgres;
+
+--
+-- TOC entry 222 (class 1259 OID 16882)
+-- Name: registro_compra_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.registro_compra_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.registro_compra_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3001 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: registro_compra_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.registro_compra_id_seq OWNED BY public.registro_compra.id;
+
+
+--
+-- TOC entry 218 (class 1259 OID 16841)
+-- Name: tel_cliente; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tel_cliente (
+    id integer NOT NULL,
+    cod_cliente integer NOT NULL,
+    telefono character varying(20) NOT NULL
+);
+
+
+ALTER TABLE public.tel_cliente OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 16839)
+-- Name: tel_cliente_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tel_cliente_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tel_cliente_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3002 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: tel_cliente_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tel_cliente_id_seq OWNED BY public.tel_cliente.id;
+
+
+--
+-- TOC entry 212 (class 1259 OID 16802)
+-- Name: tel_empleado; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tel_empleado (
+    id integer NOT NULL,
+    cod_empleado integer NOT NULL,
+    telefono character varying(20) NOT NULL
+);
+
+
+ALTER TABLE public.tel_empleado OWNER TO postgres;
+
+--
+-- TOC entry 211 (class 1259 OID 16800)
+-- Name: tel_empleado_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tel_empleado_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tel_empleado_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3003 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: tel_empleado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tel_empleado_id_seq OWNED BY public.tel_empleado.id;
+
+
+--
+-- TOC entry 2794 (class 2604 OID 16789)
+-- Name: autor id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.autor ALTER COLUMN id SET DEFAULT nextval('public.autor_id_seq'::regclass);
+
+
+--
+-- TOC entry 2797 (class 2604 OID 16818)
+-- Name: cargo id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cargo ALTER COLUMN id SET DEFAULT nextval('public.cargo_id_seq'::regclass);
+
+
+--
+-- TOC entry 2792 (class 2604 OID 16769)
+-- Name: ciudad cod; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudad ALTER COLUMN cod SET DEFAULT nextval('public.ciudad_cod_seq'::regclass);
+
+
+--
+-- TOC entry 2798 (class 2604 OID 16831)
+-- Name: cliente id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente ALTER COLUMN id SET DEFAULT nextval('public.cliente_id_seq'::regclass);
+
+
+--
+-- TOC entry 2793 (class 2604 OID 16779)
+-- Name: editorial nit; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.editorial ALTER COLUMN nit SET DEFAULT nextval('public.editorial_nit_seq'::regclass);
+
+
+--
+-- TOC entry 2795 (class 2604 OID 16797)
+-- Name: empleado id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.empleado ALTER COLUMN id SET DEFAULT nextval('public.empleado_id_seq'::regclass);
+
+
+--
+-- TOC entry 2800 (class 2604 OID 16857)
+-- Name: libro cod; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro ALTER COLUMN cod SET DEFAULT nextval('public.libro_cod_seq'::regclass);
+
+
+--
+-- TOC entry 2801 (class 2604 OID 16887)
+-- Name: registro_compra id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra ALTER COLUMN id SET DEFAULT nextval('public.registro_compra_id_seq'::regclass);
+
+
+--
+-- TOC entry 2799 (class 2604 OID 16844)
+-- Name: tel_cliente id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_cliente ALTER COLUMN id SET DEFAULT nextval('public.tel_cliente_id_seq'::regclass);
+
+
+--
+-- TOC entry 2796 (class 2604 OID 16805)
+-- Name: tel_empleado id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_empleado ALTER COLUMN id SET DEFAULT nextval('public.tel_empleado_id_seq'::regclass);
+
+
+--
+-- TOC entry 2971 (class 0 OID 16786)
+-- Dependencies: 208
+-- Data for Name: autor; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.autor (id, nombre) FROM stdin;
+1	Aguayo González\tJaime Francisco
+2	Chávez Heredia Andrea Celaya
+3	Cortés Lagunes Ruth Silvana
+4	Espejo Ramos Hansel Andres
+5	Gómez Vargas José Ignacio
+6	Delgado Barrón Luis Felipe Gonzales
+7	Guerrero Padrés Miguel Alejandro
+8	Flores Aguilar Aniyensy Sarai
+9	García Arreguín\tMontserrat Carolina
+10	González Trejo Cipriano Ariel
+\.
+
+
+--
+-- TOC entry 2977 (class 0 OID 16815)
+-- Dependencies: 214
+-- Data for Name: cargo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cargo (id, cod_empleado, cargo) FROM stdin;
+2	2	Gerente de la Sucursal
+5	5	Encuestador Área Marketing
+\.
+
+
+--
+-- TOC entry 2967 (class 0 OID 16766)
+-- Dependencies: 204
+-- Data for Name: ciudad; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ciudad (cod, nombre) FROM stdin;
+1	Bogotá D.C
+2	Medellín
+3	Cali
+4	Pasto
+5	Santa Marta
+6	Barranquilla
+7	Rioacha
+8	Cartagena
+9	Puerto Lopez
+10	Boyacá
+11	Villavicencio
+12	Chocó
+13	Pereira
+14	Tolima
+15	Huila
+16	Meta
+\.
+
+
+--
+-- TOC entry 2979 (class 0 OID 16828)
+-- Dependencies: 216
+-- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cliente (id, cod_ciudad_residencia, nombre, fecha_ing, cod_ciudad_sucursal) FROM stdin;
+1	1	Adriana Carolina Hernandez Monte	2021-01-08	1
+2	5	Carol Ruchina Gomez Gianine	2021-02-16	5
+3	9	Carolina Pintor Pinzonni	2020-01-19	2
+4	3	Fabian Andres Fino Andrade	2020-09-02	1
+5	9	Jorge Esteban Rey Boteron	2021-01-12	7
+6	7	Camilo Jimenez Cortes	2020-12-01	4
+7	4	Margarita Perez Moreno	2020-11-03	4
+8	3	Paola Andrea Correa Lariosa	2021-02-04	3
+9	8	Rocio Guerrero Penagosa	2021-02-12	1
+16	8	Yiriam Liliam Ochoa Saboga	2020-12-29	8
+17	8	Natalia Puentes Perdomo 	2021-01-26	8
+18	4	Juan Camilo Jimenez Cortes	2020-12-01	1
+19	7	Jenny Viviana Moncaleano	2021-01-30	7
+20	7	Claudia Liliana Torres	2020-10-25	7
+22	5	Hugo Andrés Scamargo Vargas	2021-02-02	1
+27	3	Brayan Steban Cantor Munevar	2020-12-05	3
+28	6	Leonardo Aponte Quevedo	2021-02-16	6
+29	8	Daniela Lopez Arenas	2021-02-20	8
+30	2	Mike Poveda Anderson	2021-01-27	2
+10	4	Ricardo Vega Zambrano	2021-01-15	1
+15	3	Olga Vivianao Valle Solanoni	2021-01-19	1
+11	5	Yurany Catalina Cifuentes Mendez	2020-12-02	2
+14	1	Yiriam Liliam Ochoa Sabogal	2021-02-01	2
+21	4	Patricia Mendoza Alvearni	2020-11-23	2
+23	5	Ivonne Jouliette Barrera Lopez	2021-02-09	4
+12	5	Natalia Buitrago Contreras	2020-11-02	5
+13	1	Sandra Ximena Garcés	2020-10-08	5
+24	6	Laura Catalina Varon Buitragoni	2020-12-12	6
+25	1	Gabriel Mauricio Noeto Bustos	2020-11-30	7
+26	3	Daniela Hernández Bravoni	2020-11-30	7
+\.
+
+
+--
+-- TOC entry 2969 (class 0 OID 16776)
+-- Dependencies: 206
+-- Data for Name: editorial; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.editorial (nit, nombre) FROM stdin;
+90103044	Acantilado
+80341823	Aguilar
+94853043	Valdemar
+70489529	Planeta
+85024383	Olañeta
+\.
+
+
+--
+-- TOC entry 2973 (class 0 OID 16794)
+-- Dependencies: 210
+-- Data for Name: empleado; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.empleado (id, nombre, fecha_ing, fecha_nac, salario) FROM stdin;
+2	Herrera Arias\tLuis Fernando	2014-06-10	1983-01-23	2100000
+5	Hernández Prado Miguel Ángel	2020-01-15	2000-05-18	3000000
+\.
+
+
+--
+-- TOC entry 2983 (class 0 OID 16854)
+-- Dependencies: 220
+-- Data for Name: libro; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.libro (cod, nit_editorial, isbn, titulo, precio, num_paginas, cantidad) FROM stdin;
+1	94853043	978-3-16-148410-0	Luces de bohemia	39000	89	45
+8	90103044	956-6-148410-0	Cumbres borrascosas	56000	89	15
+10	80341823	654-6-148410-0	Fahrenheit 451	102000	89	21
+3	94853043	432-6-148410-0	100 años de Soledad	30000	89	19
+5	94853043	786-6-148410-0	Preludio a la fundación	19000	89	5
+16	70489529	972-3-16-148410-0	1984	76000	89	20
+28	90103044	949-3-16-148410-0	El guardián entre el centeno	32000	89	32
+25	70489529	102-3-16-148410-0	Don Quijote de la mancha	42000	89	2
+9	90103044	534-6-148410-0	La muerte de Artemio Cruz	100000	89	54
+4	94853043	543-6-148410-0	La casa de los espíritus	28000	89	34
+21	85024383	645-3-16-148410-0	La divina comedia	45000	89	50
+29	70489529	999-3-16-148410-0	La metamorfosis	36000	89	3
+26	85024383	154-3-16-148410-0	El gran Gatsby	39000	89	42
+19	94853043	431-3-16-148410-0	2666	32000	89	23
+23	80341823	234-3-16-148410-0	La tierra baldías	20000	89	5
+13	80341823	653-6-148410-0	En el camino	65000	89	30
+14	70489529	765-6-148410-0	El extranjero	78000	89	6
+\.
+
+
+--
+-- TOC entry 2984 (class 0 OID 16867)
+-- Dependencies: 221
+-- Data for Name: libro_autor; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.libro_autor (id, cod_libro, id_autor) FROM stdin;
+1	1	1
+3	3	3
+4	4	4
+5	5	5
+8	8	1
+9	9	1
+10	10	4
+13	13	3
+14	14	3
+16	16	7
+19	19	9
+21	21	4
+23	23	10
+25	25	6
+26	26	6
+28	28	2
+29	29	1
+\.
+
+
+--
+-- TOC entry 2986 (class 0 OID 16884)
+-- Dependencies: 223
+-- Data for Name: registro_compra; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.registro_compra (id, id_libro, id_cliente, fecha_compra) FROM stdin;
+30	1	7	2021-01-15
+\.
+
+
+--
+-- TOC entry 2981 (class 0 OID 16841)
+-- Dependencies: 218
+-- Data for Name: tel_cliente; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tel_cliente (id, cod_cliente, telefono) FROM stdin;
+1	1	3129687305
+2	2	3218593521
+3	3	3285749263
+4	4	3857389296
+5	5	3452534223
+6	6	3765344536
+7	7	3547343333
+8	8	3463456735
+9	9	3234213534
+10	10	3534234223
+11	11	3745643335
+12	12	3342345233
+13	13	3389070965
+14	14	3424523323
+15	15	3123321412
+16	16	3163425322
+17	17	3154334234
+18	18	3125345233
+19	19	3189073498
+20	20	3180974307
+21	21	3013489758
+22	22	3894735029
+23	23	3189730512
+24	24	3189237432
+25	25	3128930748
+26	26	3153789249
+27	27	3214523454
+28	28	3284353454
+29	29	3857654745
+30	30	3165745645
+\.
+
+
+--
+-- TOC entry 2975 (class 0 OID 16802)
+-- Dependencies: 212
+-- Data for Name: tel_empleado; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tel_empleado (id, cod_empleado, telefono) FROM stdin;
+11	2	3118645433
+\.
+
+
+--
+-- TOC entry 3004 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: autor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.autor_id_seq', 1, false);
+
+
+--
+-- TOC entry 3005 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: cargo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cargo_id_seq', 1, false);
+
+
+--
+-- TOC entry 3006 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: ciudad_cod_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.ciudad_cod_seq', 1, false);
+
+
+--
+-- TOC entry 3007 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: cliente_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cliente_id_seq', 1, false);
+
+
+--
+-- TOC entry 3008 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: editorial_nit_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.editorial_nit_seq', 1, false);
+
+
+--
+-- TOC entry 3009 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: empleado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.empleado_id_seq', 1, false);
+
+
+--
+-- TOC entry 3010 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: libro_cod_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.libro_cod_seq', 1, false);
+
+
+--
+-- TOC entry 3011 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: registro_compra_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.registro_compra_id_seq', 1, false);
+
+
+--
+-- TOC entry 3012 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: tel_cliente_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tel_cliente_id_seq', 1, false);
+
+
+--
+-- TOC entry 3013 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: tel_empleado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tel_empleado_id_seq', 1, false);
+
+
+--
+-- TOC entry 2811 (class 2606 OID 16791)
+-- Name: autor autor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.autor
+    ADD CONSTRAINT autor_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2817 (class 2606 OID 16820)
+-- Name: cargo cargo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cargo
+    ADD CONSTRAINT cargo_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2803 (class 2606 OID 16773)
+-- Name: ciudad ciudad_nombre_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudad
+    ADD CONSTRAINT ciudad_nombre_key UNIQUE (nombre);
+
+
+--
+-- TOC entry 2805 (class 2606 OID 16771)
+-- Name: ciudad ciudad_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudad
+    ADD CONSTRAINT ciudad_pkey PRIMARY KEY (cod);
+
+
+--
+-- TOC entry 2819 (class 2606 OID 16833)
+-- Name: cliente cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente
+    ADD CONSTRAINT cliente_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2807 (class 2606 OID 16783)
+-- Name: editorial editorial_nombre_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.editorial
+    ADD CONSTRAINT editorial_nombre_key UNIQUE (nombre);
+
+
+--
+-- TOC entry 2809 (class 2606 OID 16781)
+-- Name: editorial editorial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.editorial
+    ADD CONSTRAINT editorial_pkey PRIMARY KEY (nit);
+
+
+--
+-- TOC entry 2813 (class 2606 OID 16799)
+-- Name: empleado empleado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.empleado
+    ADD CONSTRAINT empleado_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2827 (class 2606 OID 16871)
+-- Name: libro_autor libro_autor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro_autor
+    ADD CONSTRAINT libro_autor_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2823 (class 2606 OID 16861)
+-- Name: libro libro_isbn_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro
+    ADD CONSTRAINT libro_isbn_key UNIQUE (isbn);
+
+
+--
+-- TOC entry 2825 (class 2606 OID 16859)
+-- Name: libro libro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro
+    ADD CONSTRAINT libro_pkey PRIMARY KEY (cod);
+
+
+--
+-- TOC entry 2829 (class 2606 OID 16889)
+-- Name: registro_compra registro_compra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra
+    ADD CONSTRAINT registro_compra_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2821 (class 2606 OID 16846)
+-- Name: tel_cliente tel_cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_cliente
+    ADD CONSTRAINT tel_cliente_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2815 (class 2606 OID 16807)
+-- Name: tel_empleado tel_empleado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_empleado
+    ADD CONSTRAINT tel_empleado_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2831 (class 2606 OID 16821)
+-- Name: cargo cargo_cod_empleado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cargo
+    ADD CONSTRAINT cargo_cod_empleado_fkey FOREIGN KEY (cod_empleado) REFERENCES public.empleado(id);
+
+
+--
+-- TOC entry 2832 (class 2606 OID 16834)
+-- Name: cliente cliente_cod_ciudad_residencia_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente
+    ADD CONSTRAINT cliente_cod_ciudad_residencia_fkey FOREIGN KEY (cod_ciudad_residencia) REFERENCES public.ciudad(cod);
+
+
+--
+-- TOC entry 2833 (class 2606 OID 17138)
+-- Name: cliente fk_cliente_ciudad_sucursal; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente
+    ADD CONSTRAINT fk_cliente_ciudad_sucursal FOREIGN KEY (cod_ciudad_sucursal) REFERENCES public.ciudad(cod);
+
+
+--
+-- TOC entry 2836 (class 2606 OID 16872)
+-- Name: libro_autor libro_autor_cod_libro_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro_autor
+    ADD CONSTRAINT libro_autor_cod_libro_fkey FOREIGN KEY (cod_libro) REFERENCES public.libro(cod);
+
+
+--
+-- TOC entry 2837 (class 2606 OID 16877)
+-- Name: libro_autor libro_autor_id_autor_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro_autor
+    ADD CONSTRAINT libro_autor_id_autor_fkey FOREIGN KEY (id_autor) REFERENCES public.autor(id);
+
+
+--
+-- TOC entry 2835 (class 2606 OID 16862)
+-- Name: libro libro_nit_editorial_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro
+    ADD CONSTRAINT libro_nit_editorial_fkey FOREIGN KEY (nit_editorial) REFERENCES public.editorial(nit);
+
+
+--
+-- TOC entry 2839 (class 2606 OID 16895)
+-- Name: registro_compra registro_compra_id_cliente_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra
+    ADD CONSTRAINT registro_compra_id_cliente_fkey FOREIGN KEY (id_cliente) REFERENCES public.cliente(id);
+
+
+--
+-- TOC entry 2838 (class 2606 OID 16890)
+-- Name: registro_compra registro_compra_id_libro_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra
+    ADD CONSTRAINT registro_compra_id_libro_fkey FOREIGN KEY (id_libro) REFERENCES public.libro(cod);
+
+
+--
+-- TOC entry 2834 (class 2606 OID 16847)
+-- Name: tel_cliente tel_cliente_cod_cliente_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_cliente
+    ADD CONSTRAINT tel_cliente_cod_cliente_fkey FOREIGN KEY (cod_cliente) REFERENCES public.cliente(id);
+
+
+--
+-- TOC entry 2830 (class 2606 OID 16808)
+-- Name: tel_empleado tel_empleado_cod_empleado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_empleado
+    ADD CONSTRAINT tel_empleado_cod_empleado_fkey FOREIGN KEY (cod_empleado) REFERENCES public.empleado(id);
+
+
+-- Completed on 2021-03-03 16:52:30
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- Database "BD_Medellin" dump
+--
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.6
+-- Dumped by pg_dump version 12.4
+
+-- Started on 2021-03-03 16:52:30
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 2992 (class 1262 OID 16580)
+-- Name: BD_Medellin; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE "BD_Medellin" WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'Spanish_Colombia.1252' LC_CTYPE = 'Spanish_Colombia.1252';
+
+
+ALTER DATABASE "BD_Medellin" OWNER TO postgres;
+
+\connect "BD_Medellin"
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 2 (class 3079 OID 16717)
+-- Name: dblink; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS dblink WITH SCHEMA public;
+
+
+--
+-- TOC entry 2993 (class 0 OID 0)
+-- Dependencies: 2
+-- Name: EXTENSION dblink; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION dblink IS 'connect to other PostgreSQL databases from within a database';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 208 (class 1259 OID 16603)
+-- Name: autor; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.autor (
+    id integer NOT NULL,
+    nombre character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.autor OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 16601)
+-- Name: autor_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.autor_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.autor_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2994 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: autor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.autor_id_seq OWNED BY public.autor.id;
+
+
+--
+-- TOC entry 214 (class 1259 OID 16632)
+-- Name: cargo; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cargo (
+    id integer NOT NULL,
+    cod_empleado integer NOT NULL,
+    cargo character varying(75) NOT NULL
+);
+
+
+ALTER TABLE public.cargo OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 16630)
+-- Name: cargo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cargo_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cargo_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2995 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: cargo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.cargo_id_seq OWNED BY public.cargo.id;
+
+
+--
+-- TOC entry 204 (class 1259 OID 16583)
+-- Name: ciudad; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ciudad (
+    cod integer NOT NULL,
+    nombre character varying(75) NOT NULL
+);
+
+
+ALTER TABLE public.ciudad OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 16581)
+-- Name: ciudad_cod_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ciudad_cod_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ciudad_cod_seq OWNER TO postgres;
+
+--
+-- TOC entry 2996 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: ciudad_cod_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.ciudad_cod_seq OWNED BY public.ciudad.cod;
+
+
+--
+-- TOC entry 216 (class 1259 OID 16645)
+-- Name: cliente; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cliente (
+    id integer NOT NULL,
+    cod_ciudad_residencia integer NOT NULL,
+    nombre character varying(100) NOT NULL,
+    fecha_ing date NOT NULL,
+    cod_ciudad_sucursal integer NOT NULL
+);
+
+
+ALTER TABLE public.cliente OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 16643)
+-- Name: cliente_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cliente_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cliente_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2997 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: cliente_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.cliente_id_seq OWNED BY public.cliente.id;
+
+
+--
+-- TOC entry 206 (class 1259 OID 16593)
+-- Name: editorial; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.editorial (
+    nit integer NOT NULL,
+    nombre character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.editorial OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 16591)
+-- Name: editorial_nit_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.editorial_nit_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.editorial_nit_seq OWNER TO postgres;
+
+--
+-- TOC entry 2998 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: editorial_nit_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.editorial_nit_seq OWNED BY public.editorial.nit;
+
+
+--
+-- TOC entry 210 (class 1259 OID 16611)
+-- Name: empleado; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.empleado (
+    id integer NOT NULL,
+    nombre character varying(100) NOT NULL,
+    fecha_ing date NOT NULL,
+    fecha_nac date NOT NULL,
+    salario double precision NOT NULL
+);
+
+
+ALTER TABLE public.empleado OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 16609)
+-- Name: empleado_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.empleado_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.empleado_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2999 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: empleado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.empleado_id_seq OWNED BY public.empleado.id;
+
+
+--
+-- TOC entry 220 (class 1259 OID 16671)
+-- Name: libro; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.libro (
+    cod integer NOT NULL,
+    nit_editorial integer NOT NULL,
+    isbn character varying(25) NOT NULL,
+    titulo character varying(100) NOT NULL,
+    precio double precision NOT NULL,
+    num_paginas integer NOT NULL,
+    cantidad integer NOT NULL
+);
+
+
+ALTER TABLE public.libro OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 16684)
+-- Name: libro_autor; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.libro_autor (
+    id integer NOT NULL,
+    cod_libro integer NOT NULL,
+    id_autor integer NOT NULL
+);
+
+
+ALTER TABLE public.libro_autor OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 16669)
+-- Name: libro_cod_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.libro_cod_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.libro_cod_seq OWNER TO postgres;
+
+--
+-- TOC entry 3000 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: libro_cod_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.libro_cod_seq OWNED BY public.libro.cod;
+
+
+--
+-- TOC entry 223 (class 1259 OID 16701)
+-- Name: registro_compra; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.registro_compra (
+    id integer NOT NULL,
+    id_libro integer NOT NULL,
+    id_cliente integer NOT NULL,
+    fecha_compra date NOT NULL
+);
+
+
+ALTER TABLE public.registro_compra OWNER TO postgres;
+
+--
+-- TOC entry 222 (class 1259 OID 16699)
+-- Name: registro_compra_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.registro_compra_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.registro_compra_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3001 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: registro_compra_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.registro_compra_id_seq OWNED BY public.registro_compra.id;
+
+
+--
+-- TOC entry 218 (class 1259 OID 16658)
+-- Name: tel_cliente; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tel_cliente (
+    id integer NOT NULL,
+    cod_cliente integer NOT NULL,
+    telefono character varying(20) NOT NULL
+);
+
+
+ALTER TABLE public.tel_cliente OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 16656)
+-- Name: tel_cliente_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tel_cliente_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tel_cliente_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3002 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: tel_cliente_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tel_cliente_id_seq OWNED BY public.tel_cliente.id;
+
+
+--
+-- TOC entry 212 (class 1259 OID 16619)
+-- Name: tel_empleado; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tel_empleado (
+    id integer NOT NULL,
+    cod_empleado integer NOT NULL,
+    telefono character varying(20) NOT NULL
+);
+
+
+ALTER TABLE public.tel_empleado OWNER TO postgres;
+
+--
+-- TOC entry 211 (class 1259 OID 16617)
+-- Name: tel_empleado_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tel_empleado_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tel_empleado_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3003 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: tel_empleado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tel_empleado_id_seq OWNED BY public.tel_empleado.id;
+
+
+--
+-- TOC entry 2794 (class 2604 OID 16606)
+-- Name: autor id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.autor ALTER COLUMN id SET DEFAULT nextval('public.autor_id_seq'::regclass);
+
+
+--
+-- TOC entry 2797 (class 2604 OID 16635)
+-- Name: cargo id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cargo ALTER COLUMN id SET DEFAULT nextval('public.cargo_id_seq'::regclass);
+
+
+--
+-- TOC entry 2792 (class 2604 OID 16586)
+-- Name: ciudad cod; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudad ALTER COLUMN cod SET DEFAULT nextval('public.ciudad_cod_seq'::regclass);
+
+
+--
+-- TOC entry 2798 (class 2604 OID 16648)
+-- Name: cliente id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente ALTER COLUMN id SET DEFAULT nextval('public.cliente_id_seq'::regclass);
+
+
+--
+-- TOC entry 2793 (class 2604 OID 16596)
+-- Name: editorial nit; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.editorial ALTER COLUMN nit SET DEFAULT nextval('public.editorial_nit_seq'::regclass);
+
+
+--
+-- TOC entry 2795 (class 2604 OID 16614)
+-- Name: empleado id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.empleado ALTER COLUMN id SET DEFAULT nextval('public.empleado_id_seq'::regclass);
+
+
+--
+-- TOC entry 2800 (class 2604 OID 16674)
+-- Name: libro cod; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro ALTER COLUMN cod SET DEFAULT nextval('public.libro_cod_seq'::regclass);
+
+
+--
+-- TOC entry 2801 (class 2604 OID 16704)
+-- Name: registro_compra id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra ALTER COLUMN id SET DEFAULT nextval('public.registro_compra_id_seq'::regclass);
+
+
+--
+-- TOC entry 2799 (class 2604 OID 16661)
+-- Name: tel_cliente id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_cliente ALTER COLUMN id SET DEFAULT nextval('public.tel_cliente_id_seq'::regclass);
+
+
+--
+-- TOC entry 2796 (class 2604 OID 16622)
+-- Name: tel_empleado id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_empleado ALTER COLUMN id SET DEFAULT nextval('public.tel_empleado_id_seq'::regclass);
+
+
+--
+-- TOC entry 2971 (class 0 OID 16603)
+-- Dependencies: 208
+-- Data for Name: autor; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.autor (id, nombre) FROM stdin;
+1	Aguayo González\tJaime Francisco
+2	Chávez Heredia Andrea Celaya
+3	Cortés Lagunes Ruth Silvana
+4	Espejo Ramos Hansel Andres
+5	Gómez Vargas José Ignacio
+6	Delgado Barrón Luis Felipe Gonzales
+7	Guerrero Padrés Miguel Alejandro
+8	Flores Aguilar Aniyensy Sarai
+9	García Arreguín\tMontserrat Carolina
+10	González Trejo Cipriano Ariel
+\.
+
+
+--
+-- TOC entry 2977 (class 0 OID 16632)
+-- Dependencies: 214
+-- Data for Name: cargo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cargo (id, cod_empleado, cargo) FROM stdin;
+7	7	Desarrollador de Negocios
+15	15	Gerente de la Sucursal
+\.
+
+
+--
+-- TOC entry 2967 (class 0 OID 16583)
+-- Dependencies: 204
+-- Data for Name: ciudad; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ciudad (cod, nombre) FROM stdin;
+1	Bogotá D.C
+2	Medellín
+3	Cali
+4	Pasto
+5	Santa Marta
+6	Barranquilla
+7	Rioacha
+8	Cartagena
+9	Puerto Lopez
+10	Boyacá
+11	Villavicencio
+12	Chocó
+13	Pereira
+14	Tolima
+15	Huila
+16	Meta
+\.
+
+
+--
+-- TOC entry 2979 (class 0 OID 16645)
+-- Dependencies: 216
+-- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cliente (id, cod_ciudad_residencia, nombre, fecha_ing, cod_ciudad_sucursal) FROM stdin;
+1	1	Adriana Carolina Hernandez Monte	2021-01-08	1
+2	5	Carol Ruchina Gomez Gianine	2021-02-16	5
+3	9	Carolina Pintor Pinzonni	2020-01-19	2
+4	3	Fabian Andres Fino Andrade	2020-09-02	1
+5	9	Jorge Esteban Rey Boteron	2021-01-12	7
+6	7	Camilo Jimenez Cortes	2020-12-01	4
+7	4	Margarita Perez Moreno	2020-11-03	4
+8	3	Paola Andrea Correa Lariosa	2021-02-04	3
+9	8	Rocio Guerrero Penagosa	2021-02-12	1
+16	8	Yiriam Liliam Ochoa Saboga	2020-12-29	8
+17	8	Natalia Puentes Perdomo 	2021-01-26	8
+18	4	Juan Camilo Jimenez Cortes	2020-12-01	1
+19	7	Jenny Viviana Moncaleano	2021-01-30	7
+20	7	Claudia Liliana Torres	2020-10-25	7
+22	5	Hugo Andrés Scamargo Vargas	2021-02-02	1
+27	3	Brayan Steban Cantor Munevar	2020-12-05	3
+28	6	Leonardo Aponte Quevedo	2021-02-16	6
+29	8	Daniela Lopez Arenas	2021-02-20	8
+30	2	Mike Poveda Anderson	2021-01-27	2
+10	4	Ricardo Vega Zambrano	2021-01-15	1
+15	3	Olga Vivianao Valle Solanoni	2021-01-19	1
+11	5	Yurany Catalina Cifuentes Mendez	2020-12-02	2
+14	1	Yiriam Liliam Ochoa Sabogal	2021-02-01	2
+21	4	Patricia Mendoza Alvearni	2020-11-23	2
+23	5	Ivonne Jouliette Barrera Lopez	2021-02-09	4
+12	5	Natalia Buitrago Contreras	2020-11-02	5
+13	1	Sandra Ximena Garcés	2020-10-08	5
+24	6	Laura Catalina Varon Buitragoni	2020-12-12	6
+25	1	Gabriel Mauricio Noeto Bustos	2020-11-30	7
+26	3	Daniela Hernández Bravoni	2020-11-30	7
+\.
+
+
+--
+-- TOC entry 2969 (class 0 OID 16593)
+-- Dependencies: 206
+-- Data for Name: editorial; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.editorial (nit, nombre) FROM stdin;
+90103044	Acantilado
+80341823	Aguilar
+94853043	Valdemar
+70489529	Planeta
+85024383	Olañeta
+\.
+
+
+--
+-- TOC entry 2973 (class 0 OID 16611)
+-- Dependencies: 210
+-- Data for Name: empleado; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.empleado (id, nombre, fecha_ing, fecha_nac, salario) FROM stdin;
+7	Meré Hidalgo Pablo Querétaro	2017-09-10	1978-02-28	4100000
+15	Parga Fuentes\tIrma Carolina	2016-01-10	1976-03-06	300000
+\.
+
+
+--
+-- TOC entry 2983 (class 0 OID 16671)
+-- Dependencies: 220
+-- Data for Name: libro; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.libro (cod, nit_editorial, isbn, titulo, precio, num_paginas, cantidad) FROM stdin;
+1	94853043	978-3-16-148410-0	Luces de bohemia	39000	89	23
+2	94853043	435-6-148410-0	Crimen y castigo	42000	89	23
+5	94853043	786-6-148410-0	Preludio a la fundación	19000	89	13
+3	94853043	432-6-148410-0	100 años de Soledad	30000	89	53
+14	70489529	765-6-148410-0	El extranjero	78000	89	20
+8	90103044	956-6-148410-0	Cumbres borrascosas	56000	89	12
+29	70489529	999-3-16-148410-0	La metamorfosis	36000	89	10
+30	94853043	998-3-16-148410-0	Poesías completas	42000	89	17
+10	80341823	654-6-148410-0	Fahrenheit 451	102000	89	30
+7	70489529	321-6-148410-0	La comedia humana	55000	89	23
+16	70489529	972-3-16-148410-0	1984	76000	89	20
+13	80341823	653-6-148410-0	En el camino	65000	89	14
+11	70489529	423-6-148410-0	El Buscón	89000	89	34
+19	94853043	431-3-16-148410-0	2666	32000	89	23
+20	90103044	643-3-16-148410-0	Ensayo sobre la ceguera	65000	89	34
+24	94853043	674-3-16-148410-0	La insoportable levedad del ser	40000	89	12
+28	90103044	949-3-16-148410-0	El guardián entre el centeno	32000	89	25
+26	85024383	154-3-16-148410-0	El gran Gatsby	39000	89	23
+25	70489529	102-3-16-148410-0	Don Quijote de la mancha	42000	89	53
+9	90103044	534-6-148410-0	La muerte de Artemio Cruz	100000	89	4
+4	94853043	543-6-148410-0	La casa de los espíritus	28000	89	3
+6	90103044	345-6-148410-0	Las almas muertas	50000	89	10
+17	90103044	954-3-16-148410-0	Cuentos	45000	89	30
+21	85024383	645-3-16-148410-0	La divina comedia	45000	89	20
+22	70489529	865-3-16-148410-0	La colmena	23000	89	8
+23	80341823	234-3-16-148410-0	La tierra baldías	20000	89	23
+\.
+
+
+--
+-- TOC entry 2984 (class 0 OID 16684)
+-- Dependencies: 221
+-- Data for Name: libro_autor; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.libro_autor (id, cod_libro, id_autor) FROM stdin;
+1	1	1
+2	2	2
+3	3	3
+4	4	4
+5	5	5
+6	6	6
+7	7	1
+8	8	1
+9	9	1
+10	10	4
+11	11	4
+13	13	3
+14	14	3
+16	16	7
+17	17	7
+19	19	9
+20	20	4
+21	21	4
+22	22	10
+23	23	10
+24	24	9
+25	25	6
+26	26	6
+28	28	2
+29	29	1
+30	30	1
+\.
+
+
+--
+-- TOC entry 2986 (class 0 OID 16701)
+-- Dependencies: 223
+-- Data for Name: registro_compra; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.registro_compra (id, id_libro, id_cliente, fecha_compra) FROM stdin;
+7	5	9	2020-12-20
+8	8	10	2020-12-17
+17	1	12	2020-12-18
+25	29	17	2021-01-28
+45	29	8	2021-01-14
+46	14	10	2021-01-10
+47	1	23	2020-10-09
+\.
+
+
+--
+-- TOC entry 2981 (class 0 OID 16658)
+-- Dependencies: 218
+-- Data for Name: tel_cliente; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tel_cliente (id, cod_cliente, telefono) FROM stdin;
+1	1	3129687305
+2	2	3218593521
+3	3	3285749263
+4	4	3857389296
+5	5	3452534223
+6	6	3765344536
+7	7	3547343333
+8	8	3463456735
+9	9	3234213534
+10	10	3534234223
+11	11	3745643335
+12	12	3342345233
+13	13	3389070965
+14	14	3424523323
+15	15	3123321412
+16	16	3163425322
+17	17	3154334234
+18	18	3125345233
+19	19	3189073498
+20	20	3180974307
+21	21	3013489758
+22	22	3894735029
+23	23	3189730512
+24	24	3189237432
+25	25	3128930748
+26	26	3153789249
+27	27	3214523454
+28	28	3284353454
+29	29	3857654745
+30	30	3165745645
+\.
+
+
+--
+-- TOC entry 2975 (class 0 OID 16619)
+-- Dependencies: 212
+-- Data for Name: tel_empleado; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tel_empleado (id, cod_empleado, telefono) FROM stdin;
+13	7	3198689457
+15	15	3129085444
+\.
+
+
+--
+-- TOC entry 3004 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: autor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.autor_id_seq', 1, false);
+
+
+--
+-- TOC entry 3005 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: cargo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cargo_id_seq', 1, false);
+
+
+--
+-- TOC entry 3006 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: ciudad_cod_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.ciudad_cod_seq', 1, false);
+
+
+--
+-- TOC entry 3007 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: cliente_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cliente_id_seq', 1, false);
+
+
+--
+-- TOC entry 3008 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: editorial_nit_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.editorial_nit_seq', 1, false);
+
+
+--
+-- TOC entry 3009 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: empleado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.empleado_id_seq', 1, false);
+
+
+--
+-- TOC entry 3010 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: libro_cod_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.libro_cod_seq', 1, false);
+
+
+--
+-- TOC entry 3011 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: registro_compra_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.registro_compra_id_seq', 1, false);
+
+
+--
+-- TOC entry 3012 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: tel_cliente_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tel_cliente_id_seq', 1, false);
+
+
+--
+-- TOC entry 3013 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: tel_empleado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tel_empleado_id_seq', 1, false);
+
+
+--
+-- TOC entry 2811 (class 2606 OID 16608)
+-- Name: autor autor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.autor
+    ADD CONSTRAINT autor_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2817 (class 2606 OID 16637)
+-- Name: cargo cargo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cargo
+    ADD CONSTRAINT cargo_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2803 (class 2606 OID 16590)
+-- Name: ciudad ciudad_nombre_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudad
+    ADD CONSTRAINT ciudad_nombre_key UNIQUE (nombre);
+
+
+--
+-- TOC entry 2805 (class 2606 OID 16588)
+-- Name: ciudad ciudad_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudad
+    ADD CONSTRAINT ciudad_pkey PRIMARY KEY (cod);
+
+
+--
+-- TOC entry 2819 (class 2606 OID 16650)
+-- Name: cliente cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente
+    ADD CONSTRAINT cliente_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2807 (class 2606 OID 16600)
+-- Name: editorial editorial_nombre_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.editorial
+    ADD CONSTRAINT editorial_nombre_key UNIQUE (nombre);
+
+
+--
+-- TOC entry 2809 (class 2606 OID 16598)
+-- Name: editorial editorial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.editorial
+    ADD CONSTRAINT editorial_pkey PRIMARY KEY (nit);
+
+
+--
+-- TOC entry 2813 (class 2606 OID 16616)
+-- Name: empleado empleado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.empleado
+    ADD CONSTRAINT empleado_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2827 (class 2606 OID 16688)
+-- Name: libro_autor libro_autor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro_autor
+    ADD CONSTRAINT libro_autor_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2823 (class 2606 OID 16678)
+-- Name: libro libro_isbn_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro
+    ADD CONSTRAINT libro_isbn_key UNIQUE (isbn);
+
+
+--
+-- TOC entry 2825 (class 2606 OID 16676)
+-- Name: libro libro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro
+    ADD CONSTRAINT libro_pkey PRIMARY KEY (cod);
+
+
+--
+-- TOC entry 2829 (class 2606 OID 16706)
+-- Name: registro_compra registro_compra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra
+    ADD CONSTRAINT registro_compra_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2821 (class 2606 OID 16663)
+-- Name: tel_cliente tel_cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_cliente
+    ADD CONSTRAINT tel_cliente_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2815 (class 2606 OID 16624)
+-- Name: tel_empleado tel_empleado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_empleado
+    ADD CONSTRAINT tel_empleado_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2831 (class 2606 OID 16638)
+-- Name: cargo cargo_cod_empleado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cargo
+    ADD CONSTRAINT cargo_cod_empleado_fkey FOREIGN KEY (cod_empleado) REFERENCES public.empleado(id);
+
+
+--
+-- TOC entry 2832 (class 2606 OID 16651)
+-- Name: cliente cliente_cod_ciudad_residencia_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente
+    ADD CONSTRAINT cliente_cod_ciudad_residencia_fkey FOREIGN KEY (cod_ciudad_residencia) REFERENCES public.ciudad(cod);
+
+
+--
+-- TOC entry 2833 (class 2606 OID 17143)
+-- Name: cliente fk_cliente_ciudad_sucursal; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente
+    ADD CONSTRAINT fk_cliente_ciudad_sucursal FOREIGN KEY (cod_ciudad_sucursal) REFERENCES public.ciudad(cod);
+
+
+--
+-- TOC entry 2836 (class 2606 OID 16689)
+-- Name: libro_autor libro_autor_cod_libro_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro_autor
+    ADD CONSTRAINT libro_autor_cod_libro_fkey FOREIGN KEY (cod_libro) REFERENCES public.libro(cod);
+
+
+--
+-- TOC entry 2837 (class 2606 OID 16694)
+-- Name: libro_autor libro_autor_id_autor_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro_autor
+    ADD CONSTRAINT libro_autor_id_autor_fkey FOREIGN KEY (id_autor) REFERENCES public.autor(id);
+
+
+--
+-- TOC entry 2835 (class 2606 OID 16679)
+-- Name: libro libro_nit_editorial_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro
+    ADD CONSTRAINT libro_nit_editorial_fkey FOREIGN KEY (nit_editorial) REFERENCES public.editorial(nit);
+
+
+--
+-- TOC entry 2839 (class 2606 OID 16712)
+-- Name: registro_compra registro_compra_id_cliente_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra
+    ADD CONSTRAINT registro_compra_id_cliente_fkey FOREIGN KEY (id_cliente) REFERENCES public.cliente(id);
+
+
+--
+-- TOC entry 2838 (class 2606 OID 16707)
+-- Name: registro_compra registro_compra_id_libro_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra
+    ADD CONSTRAINT registro_compra_id_libro_fkey FOREIGN KEY (id_libro) REFERENCES public.libro(cod);
+
+
+--
+-- TOC entry 2834 (class 2606 OID 16664)
+-- Name: tel_cliente tel_cliente_cod_cliente_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_cliente
+    ADD CONSTRAINT tel_cliente_cod_cliente_fkey FOREIGN KEY (cod_cliente) REFERENCES public.cliente(id);
+
+
+--
+-- TOC entry 2830 (class 2606 OID 16625)
+-- Name: tel_empleado tel_empleado_cod_empleado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_empleado
+    ADD CONSTRAINT tel_empleado_cod_empleado_fkey FOREIGN KEY (cod_empleado) REFERENCES public.empleado(id);
+
+
+-- Completed on 2021-03-03 16:52:37
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- Database "BD_Pasto" dump
+--
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.6
+-- Dumped by pg_dump version 12.4
+
+-- Started on 2021-03-03 16:52:37
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 2992 (class 1262 OID 16946)
+-- Name: BD_Pasto; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE "BD_Pasto" WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'Spanish_Colombia.1252' LC_CTYPE = 'Spanish_Colombia.1252';
+
+
+ALTER DATABASE "BD_Pasto" OWNER TO postgres;
+
+\connect "BD_Pasto"
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 2 (class 3079 OID 17083)
+-- Name: dblink; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS dblink WITH SCHEMA public;
+
+
+--
+-- TOC entry 2993 (class 0 OID 0)
+-- Dependencies: 2
+-- Name: EXTENSION dblink; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION dblink IS 'connect to other PostgreSQL databases from within a database';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 208 (class 1259 OID 16969)
+-- Name: autor; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.autor (
+    id integer NOT NULL,
+    nombre character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.autor OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 16967)
+-- Name: autor_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.autor_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.autor_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2994 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: autor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.autor_id_seq OWNED BY public.autor.id;
+
+
+--
+-- TOC entry 214 (class 1259 OID 16998)
+-- Name: cargo; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cargo (
+    id integer NOT NULL,
+    cod_empleado integer NOT NULL,
+    cargo character varying(75) NOT NULL
+);
+
+
+ALTER TABLE public.cargo OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 16996)
+-- Name: cargo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cargo_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cargo_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2995 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: cargo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.cargo_id_seq OWNED BY public.cargo.id;
+
+
+--
+-- TOC entry 204 (class 1259 OID 16949)
+-- Name: ciudad; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ciudad (
+    cod integer NOT NULL,
+    nombre character varying(75) NOT NULL
+);
+
+
+ALTER TABLE public.ciudad OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 16947)
+-- Name: ciudad_cod_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ciudad_cod_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ciudad_cod_seq OWNER TO postgres;
+
+--
+-- TOC entry 2996 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: ciudad_cod_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.ciudad_cod_seq OWNED BY public.ciudad.cod;
+
+
+--
+-- TOC entry 216 (class 1259 OID 17011)
+-- Name: cliente; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.cliente (
+    id integer NOT NULL,
+    cod_ciudad_residencia integer NOT NULL,
+    nombre character varying(100) NOT NULL,
+    fecha_ing date NOT NULL,
+    cod_ciudad_sucursal integer NOT NULL
+);
+
+
+ALTER TABLE public.cliente OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 17009)
+-- Name: cliente_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cliente_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cliente_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2997 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: cliente_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.cliente_id_seq OWNED BY public.cliente.id;
+
+
+--
+-- TOC entry 206 (class 1259 OID 16959)
+-- Name: editorial; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.editorial (
+    nit integer NOT NULL,
+    nombre character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.editorial OWNER TO postgres;
+
+--
+-- TOC entry 205 (class 1259 OID 16957)
+-- Name: editorial_nit_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.editorial_nit_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.editorial_nit_seq OWNER TO postgres;
+
+--
+-- TOC entry 2998 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: editorial_nit_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.editorial_nit_seq OWNED BY public.editorial.nit;
+
+
+--
+-- TOC entry 210 (class 1259 OID 16977)
+-- Name: empleado; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.empleado (
+    id integer NOT NULL,
+    nombre character varying(100) NOT NULL,
+    fecha_ing date NOT NULL,
+    fecha_nac date NOT NULL,
+    salario double precision NOT NULL
+);
+
+
+ALTER TABLE public.empleado OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 16975)
+-- Name: empleado_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.empleado_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.empleado_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2999 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: empleado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.empleado_id_seq OWNED BY public.empleado.id;
+
+
+--
+-- TOC entry 220 (class 1259 OID 17037)
+-- Name: libro; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.libro (
+    cod integer NOT NULL,
+    nit_editorial integer NOT NULL,
+    isbn character varying(25) NOT NULL,
+    titulo character varying(100) NOT NULL,
+    precio double precision NOT NULL,
+    num_paginas integer NOT NULL,
+    cantidad integer NOT NULL
+);
+
+
+ALTER TABLE public.libro OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 17050)
+-- Name: libro_autor; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.libro_autor (
+    id integer NOT NULL,
+    cod_libro integer NOT NULL,
+    id_autor integer NOT NULL
+);
+
+
+ALTER TABLE public.libro_autor OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 17035)
+-- Name: libro_cod_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.libro_cod_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.libro_cod_seq OWNER TO postgres;
+
+--
+-- TOC entry 3000 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: libro_cod_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.libro_cod_seq OWNED BY public.libro.cod;
+
+
+--
+-- TOC entry 223 (class 1259 OID 17067)
+-- Name: registro_compra; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.registro_compra (
+    id integer NOT NULL,
+    id_libro integer NOT NULL,
+    id_cliente integer NOT NULL,
+    fecha_compra date NOT NULL
+);
+
+
+ALTER TABLE public.registro_compra OWNER TO postgres;
+
+--
+-- TOC entry 222 (class 1259 OID 17065)
+-- Name: registro_compra_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.registro_compra_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.registro_compra_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3001 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: registro_compra_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.registro_compra_id_seq OWNED BY public.registro_compra.id;
+
+
+--
+-- TOC entry 218 (class 1259 OID 17024)
+-- Name: tel_cliente; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tel_cliente (
+    id integer NOT NULL,
+    cod_cliente integer NOT NULL,
+    telefono character varying(20) NOT NULL
+);
+
+
+ALTER TABLE public.tel_cliente OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 17022)
+-- Name: tel_cliente_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tel_cliente_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tel_cliente_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3002 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: tel_cliente_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tel_cliente_id_seq OWNED BY public.tel_cliente.id;
+
+
+--
+-- TOC entry 212 (class 1259 OID 16985)
+-- Name: tel_empleado; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tel_empleado (
+    id integer NOT NULL,
+    cod_empleado integer NOT NULL,
+    telefono character varying(20) NOT NULL
+);
+
+
+ALTER TABLE public.tel_empleado OWNER TO postgres;
+
+--
+-- TOC entry 211 (class 1259 OID 16983)
+-- Name: tel_empleado_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tel_empleado_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tel_empleado_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3003 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: tel_empleado_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tel_empleado_id_seq OWNED BY public.tel_empleado.id;
+
+
+--
+-- TOC entry 2794 (class 2604 OID 16972)
+-- Name: autor id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.autor ALTER COLUMN id SET DEFAULT nextval('public.autor_id_seq'::regclass);
+
+
+--
+-- TOC entry 2797 (class 2604 OID 17001)
+-- Name: cargo id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cargo ALTER COLUMN id SET DEFAULT nextval('public.cargo_id_seq'::regclass);
+
+
+--
+-- TOC entry 2792 (class 2604 OID 16952)
+-- Name: ciudad cod; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudad ALTER COLUMN cod SET DEFAULT nextval('public.ciudad_cod_seq'::regclass);
+
+
+--
+-- TOC entry 2798 (class 2604 OID 17014)
+-- Name: cliente id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente ALTER COLUMN id SET DEFAULT nextval('public.cliente_id_seq'::regclass);
+
+
+--
+-- TOC entry 2793 (class 2604 OID 16962)
+-- Name: editorial nit; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.editorial ALTER COLUMN nit SET DEFAULT nextval('public.editorial_nit_seq'::regclass);
+
+
+--
+-- TOC entry 2795 (class 2604 OID 16980)
+-- Name: empleado id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.empleado ALTER COLUMN id SET DEFAULT nextval('public.empleado_id_seq'::regclass);
+
+
+--
+-- TOC entry 2800 (class 2604 OID 17040)
+-- Name: libro cod; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro ALTER COLUMN cod SET DEFAULT nextval('public.libro_cod_seq'::regclass);
+
+
+--
+-- TOC entry 2801 (class 2604 OID 17070)
+-- Name: registro_compra id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra ALTER COLUMN id SET DEFAULT nextval('public.registro_compra_id_seq'::regclass);
+
+
+--
+-- TOC entry 2799 (class 2604 OID 17027)
+-- Name: tel_cliente id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_cliente ALTER COLUMN id SET DEFAULT nextval('public.tel_cliente_id_seq'::regclass);
+
+
+--
+-- TOC entry 2796 (class 2604 OID 16988)
+-- Name: tel_empleado id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_empleado ALTER COLUMN id SET DEFAULT nextval('public.tel_empleado_id_seq'::regclass);
+
+
+--
+-- TOC entry 2971 (class 0 OID 16969)
+-- Dependencies: 208
+-- Data for Name: autor; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.autor (id, nombre) FROM stdin;
+1	Aguayo González\tJaime Francisco
+2	Chávez Heredia Andrea Celaya
+3	Cortés Lagunes Ruth Silvana
+4	Espejo Ramos Hansel Andres
+5	Gómez Vargas José Ignacio
+6	Delgado Barrón Luis Felipe Gonzales
+7	Guerrero Padrés Miguel Alejandro
+8	Flores Aguilar Aniyensy Sarai
+9	García Arreguín\tMontserrat Carolina
+10	González Trejo Cipriano Ariel
+\.
+
+
+--
+-- TOC entry 2977 (class 0 OID 16998)
+-- Dependencies: 214
+-- Data for Name: cargo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cargo (id, cod_empleado, cargo) FROM stdin;
+10	10	Gerente de la Sucursal
+11	11	Desarrollador de Negocios
+\.
+
+
+--
+-- TOC entry 2967 (class 0 OID 16949)
+-- Dependencies: 204
+-- Data for Name: ciudad; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ciudad (cod, nombre) FROM stdin;
+1	Bogotá D.C
+2	Medellín
+3	Cali
+4	Pasto
+5	Santa Marta
+6	Barranquilla
+7	Rioacha
+8	Cartagena
+9	Puerto Lopez
+10	Boyacá
+11	Villavicencio
+12	Chocó
+13	Pereira
+14	Tolima
+15	Huila
+16	Meta
+\.
+
+
+--
+-- TOC entry 2979 (class 0 OID 17011)
+-- Dependencies: 216
+-- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cliente (id, cod_ciudad_residencia, nombre, fecha_ing, cod_ciudad_sucursal) FROM stdin;
+1	1	Adriana Carolina Hernandez Monte	2021-01-08	1
+2	5	Carol Ruchina Gomez Gianine	2021-02-16	5
+3	9	Carolina Pintor Pinzonni	2020-01-19	2
+4	3	Fabian Andres Fino Andrade	2020-09-02	1
+5	9	Jorge Esteban Rey Boteron	2021-01-12	7
+6	7	Camilo Jimenez Cortes	2020-12-01	4
+7	4	Margarita Perez Moreno	2020-11-03	4
+8	3	Paola Andrea Correa Lariosa	2021-02-04	3
+9	8	Rocio Guerrero Penagosa	2021-02-12	1
+16	8	Yiriam Liliam Ochoa Saboga	2020-12-29	8
+17	8	Natalia Puentes Perdomo 	2021-01-26	8
+18	4	Juan Camilo Jimenez Cortes	2020-12-01	1
+19	7	Jenny Viviana Moncaleano	2021-01-30	7
+20	7	Claudia Liliana Torres	2020-10-25	7
+22	5	Hugo Andrés Scamargo Vargas	2021-02-02	1
+27	3	Brayan Steban Cantor Munevar	2020-12-05	3
+28	6	Leonardo Aponte Quevedo	2021-02-16	6
+29	8	Daniela Lopez Arenas	2021-02-20	8
+30	2	Mike Poveda Anderson	2021-01-27	2
+10	4	Ricardo Vega Zambrano	2021-01-15	1
+15	3	Olga Vivianao Valle Solanoni	2021-01-19	1
+11	5	Yurany Catalina Cifuentes Mendez	2020-12-02	2
+14	1	Yiriam Liliam Ochoa Sabogal	2021-02-01	2
+21	4	Patricia Mendoza Alvearni	2020-11-23	2
+23	5	Ivonne Jouliette Barrera Lopez	2021-02-09	4
+12	5	Natalia Buitrago Contreras	2020-11-02	5
+13	1	Sandra Ximena Garcés	2020-10-08	5
+24	6	Laura Catalina Varon Buitragoni	2020-12-12	6
+25	1	Gabriel Mauricio Noeto Bustos	2020-11-30	7
+26	3	Daniela Hernández Bravoni	2020-11-30	7
+\.
+
+
+--
+-- TOC entry 2969 (class 0 OID 16959)
+-- Dependencies: 206
+-- Data for Name: editorial; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.editorial (nit, nombre) FROM stdin;
+90103044	Acantilado
+80341823	Aguilar
+94853043	Valdemar
+70489529	Planeta
+85024383	Olañeta
+\.
+
+
+--
+-- TOC entry 2973 (class 0 OID 16977)
+-- Dependencies: 210
+-- Data for Name: empleado; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.empleado (id, nombre, fecha_ing, fecha_nac, salario) FROM stdin;
+10	Moreno Huitrón Aelín	2016-10-02	1991-02-11	4200000
+11	Moreno Reveles Jessica Liliana	2013-12-31	1986-02-12	1000000
+\.
+
+
+--
+-- TOC entry 2983 (class 0 OID 17037)
+-- Dependencies: 220
+-- Data for Name: libro; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.libro (cod, nit_editorial, isbn, titulo, precio, num_paginas, cantidad) FROM stdin;
+1	94853043	978-3-16-148410-0	Luces de bohemia	39000	89	10
+3	94853043	432-6-148410-0	100 años de Soledad	30000	89	12
+5	94853043	786-6-148410-0	Preludio a la fundación	19000	89	6
+8	90103044	956-6-148410-0	Cumbres borrascosas	56000	89	16
+9	90103044	534-6-148410-0	La muerte de Artemio Cruz	100000	89	10
+10	80341823	654-6-148410-0	Fahrenheit 451	102000	89	24
+14	70489529	765-6-148410-0	El extranjero	78000	89	23
+22	70489529	865-3-16-148410-0	La colmena	23000	89	23
+23	80341823	234-3-16-148410-0	La tierra baldías	20000	89	7
+25	70489529	102-3-16-148410-0	Don Quijote de la mancha	42000	89	5
+\.
+
+
+--
+-- TOC entry 2984 (class 0 OID 17050)
+-- Dependencies: 221
+-- Data for Name: libro_autor; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.libro_autor (id, cod_libro, id_autor) FROM stdin;
+1	1	1
+3	3	3
+5	5	5
+8	8	1
+9	9	1
+10	10	4
+14	14	3
+22	22	10
+23	23	10
+25	25	6
+\.
+
+
+--
+-- TOC entry 2986 (class 0 OID 17067)
+-- Dependencies: 223
+-- Data for Name: registro_compra; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.registro_compra (id, id_libro, id_cliente, fecha_compra) FROM stdin;
+24	1	7	2021-01-19
+29	1	5	2021-01-14
+\.
+
+
+--
+-- TOC entry 2981 (class 0 OID 17024)
+-- Dependencies: 218
+-- Data for Name: tel_cliente; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tel_cliente (id, cod_cliente, telefono) FROM stdin;
+1	1	3129687305
+2	2	3218593521
+3	3	3285749263
+4	4	3857389296
+5	5	3452534223
+6	6	3765344536
+7	7	3547343333
+8	8	3463456735
+9	9	3234213534
+10	10	3534234223
+11	11	3745643335
+12	12	3342345233
+13	13	3389070965
+14	14	3424523323
+15	15	3123321412
+16	16	3163425322
+17	17	3154334234
+18	18	3125345233
+19	19	3189073498
+20	20	3180974307
+21	21	3013489758
+22	22	3894735029
+23	23	3189730512
+24	24	3189237432
+25	25	3128930748
+26	26	3153789249
+27	27	3214523454
+28	28	3284353454
+29	29	3857654745
+30	30	3165745645
+\.
+
+
+--
+-- TOC entry 2975 (class 0 OID 16985)
+-- Dependencies: 212
+-- Data for Name: tel_empleado; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tel_empleado (id, cod_empleado, telefono) FROM stdin;
+5	11	3123513231
+\.
+
+
+--
+-- TOC entry 3004 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: autor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.autor_id_seq', 1, false);
+
+
+--
+-- TOC entry 3005 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: cargo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cargo_id_seq', 1, false);
+
+
+--
+-- TOC entry 3006 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: ciudad_cod_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.ciudad_cod_seq', 1, false);
+
+
+--
+-- TOC entry 3007 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: cliente_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cliente_id_seq', 1, false);
+
+
+--
+-- TOC entry 3008 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: editorial_nit_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.editorial_nit_seq', 1, false);
+
+
+--
+-- TOC entry 3009 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: empleado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.empleado_id_seq', 1, false);
+
+
+--
+-- TOC entry 3010 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: libro_cod_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.libro_cod_seq', 1, false);
+
+
+--
+-- TOC entry 3011 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: registro_compra_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.registro_compra_id_seq', 1, false);
+
+
+--
+-- TOC entry 3012 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: tel_cliente_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tel_cliente_id_seq', 1, false);
+
+
+--
+-- TOC entry 3013 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: tel_empleado_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tel_empleado_id_seq', 1, false);
+
+
+--
+-- TOC entry 2811 (class 2606 OID 16974)
+-- Name: autor autor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.autor
+    ADD CONSTRAINT autor_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2817 (class 2606 OID 17003)
+-- Name: cargo cargo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cargo
+    ADD CONSTRAINT cargo_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2803 (class 2606 OID 16956)
+-- Name: ciudad ciudad_nombre_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudad
+    ADD CONSTRAINT ciudad_nombre_key UNIQUE (nombre);
+
+
+--
+-- TOC entry 2805 (class 2606 OID 16954)
+-- Name: ciudad ciudad_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ciudad
+    ADD CONSTRAINT ciudad_pkey PRIMARY KEY (cod);
+
+
+--
+-- TOC entry 2819 (class 2606 OID 17016)
+-- Name: cliente cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente
+    ADD CONSTRAINT cliente_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2807 (class 2606 OID 16966)
+-- Name: editorial editorial_nombre_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.editorial
+    ADD CONSTRAINT editorial_nombre_key UNIQUE (nombre);
+
+
+--
+-- TOC entry 2809 (class 2606 OID 16964)
+-- Name: editorial editorial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.editorial
+    ADD CONSTRAINT editorial_pkey PRIMARY KEY (nit);
+
+
+--
+-- TOC entry 2813 (class 2606 OID 16982)
+-- Name: empleado empleado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.empleado
+    ADD CONSTRAINT empleado_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2827 (class 2606 OID 17054)
+-- Name: libro_autor libro_autor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro_autor
+    ADD CONSTRAINT libro_autor_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2823 (class 2606 OID 17044)
+-- Name: libro libro_isbn_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro
+    ADD CONSTRAINT libro_isbn_key UNIQUE (isbn);
+
+
+--
+-- TOC entry 2825 (class 2606 OID 17042)
+-- Name: libro libro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro
+    ADD CONSTRAINT libro_pkey PRIMARY KEY (cod);
+
+
+--
+-- TOC entry 2829 (class 2606 OID 17072)
+-- Name: registro_compra registro_compra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra
+    ADD CONSTRAINT registro_compra_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2821 (class 2606 OID 17029)
+-- Name: tel_cliente tel_cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_cliente
+    ADD CONSTRAINT tel_cliente_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2815 (class 2606 OID 16990)
+-- Name: tel_empleado tel_empleado_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_empleado
+    ADD CONSTRAINT tel_empleado_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2831 (class 2606 OID 17004)
+-- Name: cargo cargo_cod_empleado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cargo
+    ADD CONSTRAINT cargo_cod_empleado_fkey FOREIGN KEY (cod_empleado) REFERENCES public.empleado(id);
+
+
+--
+-- TOC entry 2832 (class 2606 OID 17017)
+-- Name: cliente cliente_cod_ciudad_residencia_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente
+    ADD CONSTRAINT cliente_cod_ciudad_residencia_fkey FOREIGN KEY (cod_ciudad_residencia) REFERENCES public.ciudad(cod);
+
+
+--
+-- TOC entry 2833 (class 2606 OID 17148)
+-- Name: cliente fk_cliente_ciudad_sucursal; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.cliente
+    ADD CONSTRAINT fk_cliente_ciudad_sucursal FOREIGN KEY (cod_ciudad_sucursal) REFERENCES public.ciudad(cod);
+
+
+--
+-- TOC entry 2836 (class 2606 OID 17055)
+-- Name: libro_autor libro_autor_cod_libro_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro_autor
+    ADD CONSTRAINT libro_autor_cod_libro_fkey FOREIGN KEY (cod_libro) REFERENCES public.libro(cod);
+
+
+--
+-- TOC entry 2837 (class 2606 OID 17060)
+-- Name: libro_autor libro_autor_id_autor_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro_autor
+    ADD CONSTRAINT libro_autor_id_autor_fkey FOREIGN KEY (id_autor) REFERENCES public.autor(id);
+
+
+--
+-- TOC entry 2835 (class 2606 OID 17045)
+-- Name: libro libro_nit_editorial_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.libro
+    ADD CONSTRAINT libro_nit_editorial_fkey FOREIGN KEY (nit_editorial) REFERENCES public.editorial(nit);
+
+
+--
+-- TOC entry 2839 (class 2606 OID 17078)
+-- Name: registro_compra registro_compra_id_cliente_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra
+    ADD CONSTRAINT registro_compra_id_cliente_fkey FOREIGN KEY (id_cliente) REFERENCES public.cliente(id);
+
+
+--
+-- TOC entry 2838 (class 2606 OID 17073)
+-- Name: registro_compra registro_compra_id_libro_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.registro_compra
+    ADD CONSTRAINT registro_compra_id_libro_fkey FOREIGN KEY (id_libro) REFERENCES public.libro(cod);
+
+
+--
+-- TOC entry 2834 (class 2606 OID 17030)
+-- Name: tel_cliente tel_cliente_cod_cliente_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_cliente
+    ADD CONSTRAINT tel_cliente_cod_cliente_fkey FOREIGN KEY (cod_cliente) REFERENCES public.cliente(id);
+
+
+--
+-- TOC entry 2830 (class 2606 OID 16991)
+-- Name: tel_empleado tel_empleado_cod_empleado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tel_empleado
+    ADD CONSTRAINT tel_empleado_cod_empleado_fkey FOREIGN KEY (cod_empleado) REFERENCES public.empleado(id);
+
+
+-- Completed on 2021-03-03 16:52:44
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- Database "postgres" dump
+--
+
+\connect postgres
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.6
+-- Dumped by pg_dump version 12.4
+
+-- Started on 2021-03-03 16:52:44
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 1 (class 3079 OID 16384)
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2813 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
+
+
+-- Completed on 2021-03-03 16:52:46
+
+--
+-- PostgreSQL database dump complete
+--
+
+-- Completed on 2021-03-03 16:52:46
+
+--
+-- PostgreSQL database cluster dump complete
+--
+

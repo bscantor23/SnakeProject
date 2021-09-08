@@ -1,0 +1,9 @@
+package com.schemacategorias.dao;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.schemacategorias.entities.Producto;
+
+public interface ICategoriasDao extends CrudRepository<Producto, Long> {
+
+}

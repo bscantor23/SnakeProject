@@ -1,0 +1,13 @@
+package com.schemacatalogos;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SchemaCatalogosApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SchemaCatalogosApplication.class, args);
+	}
+
+}

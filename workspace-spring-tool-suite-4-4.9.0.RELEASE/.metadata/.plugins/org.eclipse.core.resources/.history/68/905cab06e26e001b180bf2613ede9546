@@ -1,0 +1,5 @@
+package com.microproductos.servicios;
+
+public interface IProductoServices {
+
+}

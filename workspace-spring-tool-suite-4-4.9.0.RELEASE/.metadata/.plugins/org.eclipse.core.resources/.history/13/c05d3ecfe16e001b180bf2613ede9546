@@ -1,0 +1,5 @@
+package com.microproductos.entities;
+
+public class Producto {
+
+}

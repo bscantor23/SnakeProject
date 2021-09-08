@@ -1,0 +1,12 @@
+package com.schemacatalogos.services;
+
+import java.util.List;
+
+import com.schemacatalogos.models.Catalogo;
+
+public interface IServicesCatalogo {
+	
+	public List<Catalogo> findAll();
+	public Catalogo findById(Long id, Integer cantidad);
+	
+}

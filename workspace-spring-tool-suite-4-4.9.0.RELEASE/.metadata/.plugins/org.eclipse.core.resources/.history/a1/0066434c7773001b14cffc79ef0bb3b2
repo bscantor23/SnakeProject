@@ -1,0 +1,11 @@
+package com.schemacatalogos.services;
+
+import java.util.List;
+
+import com.schemacatalogos.models.Catalogo;
+import com.schemacatalogos.models.Response;
+
+public interface IServicesCatalogo {
+	
+	public List<Catalogo> findAll();
+}

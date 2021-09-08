@@ -1,0 +1,5 @@
+package com.microproductos.dao;
+
+public interface IProductosDao {
+
+}
