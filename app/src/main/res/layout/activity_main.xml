@@ -6,14 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <com.example.snakeproject.Game
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:background="@android:color/holo_orange_dark"
         android:layout_above="@id/menu">
 
-    </LinearLayout>
+    </com.example.snakeproject.Game>
 
     <LinearLayout
         android:id="@+id/menu"
