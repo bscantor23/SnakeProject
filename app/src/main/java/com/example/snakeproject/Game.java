@@ -35,7 +35,7 @@ public class Game extends View {
     public Game(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        Game.size = 75 * SCREEN_WIDTH / 1080;
+        Game.size = 90 * SCREEN_WIDTH / 1080;
 
         // Estilo de Celda con fondo Claro
         bmGrassLight = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
@@ -43,7 +43,7 @@ public class Game extends View {
 
         // Estilo de Celda con fondo Oscuro
         bmGrassDark = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
-        bmGrassDark.eraseColor(Color.parseColor("#694F3C"));
+        bmGrassDark.eraseColor(Color.parseColor("#A87854"));
 
         // Sprites dispuestos para el juego.
         bmSprites = BitmapFactory.decodeResource(this.getResources(), R.drawable.sprites);

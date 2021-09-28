@@ -1,8 +1,0 @@
-package com.schemacatalogos.dao;
-
-import org.springframework.data.repository.CrudRepository;
-import com.microproductos.entities.Producto;
-
-public interface ICatalogosDao extends CrudRepository<Producto, Long> {
-
-}
