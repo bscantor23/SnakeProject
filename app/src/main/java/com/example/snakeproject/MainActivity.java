@@ -14,22 +14,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //GET FULLSCREEN APPLICATION
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         //SET SCREEN SIZES
         DisplayMetrics dm = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        //Guardar como atributos estaticos las medidas de la pantalla
         Game.SCREEN_WIDTH = dm.widthPixels ;
         Game.SCREEN_HEIGHT = dm.heightPixels;
 
         setContentView(R.layout.activity_main);
-
-
     }
-
-
 
     public void onClickReset(View view) {
     }

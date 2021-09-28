@@ -1,11 +1,12 @@
-package com.example.snakeproject;
+package com.example.snakeproject.object;
 
 import android.graphics.Bitmap;
+import android.graphics.Point;
 
-public class Grass {
+public class Grass extends Point {
 
     private Bitmap bm;
-    private int x, y, w, h;
+    private int w, h;
 
     public Grass(Bitmap bm, int x, int y, int w, int h) {
         this.bm = bm;
