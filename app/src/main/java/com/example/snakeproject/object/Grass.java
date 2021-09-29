@@ -3,6 +3,7 @@ package com.example.snakeproject.object;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 
+//Celda del Tablero
 public class Grass extends Point {
 
     private Bitmap bm;

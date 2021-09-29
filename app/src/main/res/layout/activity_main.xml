@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <com.example.snakeproject.Game
+        android:id="@+id/game"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/menu">
@@ -16,41 +17,43 @@
     <LinearLayout
         android:id="@+id/menu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_height="70dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:background="@color/green_bg"
         android:gravity="center_horizontal"
-        android:background="@android:color/holo_green_dark"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:padding="12dp">
 
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:srcCompat="@drawable/manzana" />
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/manzana"
+            android:adjustViewBounds="true"/>
 
         <TextView
-            android:id="@+id/frutas"
+            android:id="@+id/txtScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="42sp"
-            android:text="x 0"/>
+            android:text="x 0"
+            android:textSize="42sp" />
 
         <Space
             android:layout_width="42dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:srcCompat="@drawable/insignia" />
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/insignia"
+            android:adjustViewBounds="true"/>
 
         <TextView
-            android:id="@+id/medallas"
+            android:id="@+id/txtBest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="42sp"
-            android:text="x 0" />
+            android:text="x 0"
+            android:textSize="42sp" />
 
     </LinearLayout>
 

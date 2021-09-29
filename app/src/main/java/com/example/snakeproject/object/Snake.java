@@ -38,7 +38,7 @@ public class Snake {
 
         // Elementos de la primera fila de los sprites
         bmBodyBottomRight = Bitmap.createBitmap(bm, 0, 0, w, h);
-        bmBodyHorizontal = Bitmap.createBitmap(bm, 1 * w, 0, w, h);
+        bmBodyHorizontal = Bitmap.createBitmap(bm,  w, 0, w, h);
         bmBodyBottomLeft = Bitmap.createBitmap(bm, 2 * w,  0, w, h);
         bmHeadUp = Bitmap.createBitmap(bm, 3 * w, 0, w, h);
         bmHeadRight = Bitmap.createBitmap(bm, 4 * w, 0, w, h);
@@ -154,6 +154,17 @@ public class Snake {
             // o si la parte del cuerpo intersecta otra parte siguiente abajo y una parte previa a la derecha
             } else if (inter_right_next && inter_bottom_prev || inter_bottom_next && inter_right_prev) {
                 body.get(i).setBm(bmBodyBottomRight);
+
+            // Si la parte del cuerpo intersecta otra parte siguiente a la derecha y una parte previa a la izquierda
+            // o si la parte del cuerpo intersecta otra parte siguiente a la izquierda y una parte previa a la derecha
+            } else if (inter_right_next && inter_left_prev || inter_left_next && inter_right_prev) {
+                body.get(i).setBm(bmBodyHorizontal);
+
+            // Si la parte del cuerpo intersecta otra parte siguiente arriba y una parte previa a la abajo
+            // o si la parte del cuerpo intersecta otra parte siguiente abajo y una parte previa a la arriba
+            } else if (inter_top_next && inter_bottom_prev || inter_bottom_next && inter_top_prev) {
+                body.get(i).setBm(bmBodyVertical);
+
             } else {
                 // Si el movimiento es horizontal
                 if (moveRight || moveLeft) {
@@ -187,7 +198,7 @@ public class Snake {
         }
     }
 
-    //Dibujar en Canvas
+    //Dibujar la serpiente en el Canvas
     public void drawSnake(Canvas canvas) {
         for (int i = length - 1; i >= 0; i--) {
             canvas.drawBitmap(body.get(i).getBm(), body.get(i).getX(), body.get(i).getY(), null);
