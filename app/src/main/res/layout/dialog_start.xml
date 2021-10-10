@@ -82,35 +82,23 @@
                     android:layout_height="180dp"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_btn_start"
-            android:layout_below="@+id/cv_score"
-            android:layout_marginTop="10dp"
-            app:cardCornerRadius="10dp"
-            android:elevation="10dp"
-            android:layout_centerHorizontal="true"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content">
-            <RelativeLayout
-                android:id="@+id/rl_start"
-                android:background="@color/blue_bg_right"
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <LinearLayout
-                    android:layout_centerInParent="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_marginLeft="5dp"
-                        android:text="Jugar"
-                        android:textColor="@color/white"
-                        android:textSize="25sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+        <Button
+            android:id="@+id/rl_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:backgroundTint="@color/teal_700"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:text="Jugar"/>
+        <Button
+            android:id="@+id/rl_multiplayer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:backgroundTint="@color/blue_bg_right"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:text="Multiplayer"/>
     </LinearLayout>
 </RelativeLayout>
