@@ -2,6 +2,7 @@ package com.example.snakeproject;
 
 public class Rlist {
     private String cod;
+    private String state;
     private int players;
 
     public String getCod() {
@@ -18,5 +19,13 @@ public class Rlist {
 
     public void setPlayers(int players) {
         this.players = players;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

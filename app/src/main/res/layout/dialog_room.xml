@@ -11,18 +11,45 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/teal_700"
+            android:background="@color/blue_bg_left"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="20dp">
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:text="LOBBY"
-                android:textSize="20dp"
-                android:textColor="@color/white"
-                android:textAlignment="center"
+                android:text="Sala: "
+                android:textSize="15dp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_room_play_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <TextView
+                android:id="@+id/txt_rol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/txt_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
         </LinearLayout>
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_score"
@@ -34,6 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
@@ -89,6 +117,7 @@
                                 android:layout_height="wrap_content"/>
                         </LinearLayout>
                     </RelativeLayout>
+
                 </LinearLayout>
                 <ImageView
                     android:src="@drawable/splash_bg"
@@ -98,7 +127,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <Button
-            android:id="@+id/rl_start"
+            android:id="@+id/room_start"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -107,13 +136,13 @@
             android:textColor="@color/white"
             android:text="Jugar"/>
         <Button
-            android:id="@+id/rl_multiplayer"
+            android:id="@+id/room_exit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:backgroundTint="@color/blue_bg_right"
+            android:backgroundTint="@color/teal_200"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:text="Multiplayer"/>
+            android:text="Salir"/>
     </LinearLayout>
 </RelativeLayout>
