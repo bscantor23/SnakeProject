@@ -9,7 +9,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -25,9 +24,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.snakeproject.object.Player;
-import com.example.snakeproject.object.Room;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -36,9 +37,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableReference;
+import com.google.firebase.functions.HttpsCallableResult;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -52,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String GAME_SETTINGS = "games";
     public static final String BEST_SCORE = "best";
 
-    public static Dialog dialogScore,dialogRooms, dialogGame;
-    public static TextView txtScore, txtBest,txtDialogScore,txtDialogBest;
+    public static Dialog dialogScore, dialogRooms, dialogGame;
+    public static TextView txtScore, txtBest, txtDialogScore, txtDialogBest;
     public Game game;
 
     // LIST ITEMS
@@ -65,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
     public String roomCode;
     public boolean host = false;
     public DocumentSnapshot gameInfo;
+    public int numPlayer = 0;
+    public Rlist match;
+    public int numRooms = 0;
 
     // STOP SNAPSHOTS
     public static ListenerRegistration registration, room;
@@ -86,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onGlobalLayout() {
                 MainActivity.this.game.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                Game.SCREEN_WIDTH  =  MainActivity.this.game.getMeasuredWidth();
-                Game.SCREEN_HEIGHT =  MainActivity.this.game.getMeasuredHeight();
+                Game.SCREEN_WIDTH = MainActivity.this.game.getMeasuredWidth();
+                Game.SCREEN_HEIGHT = MainActivity.this.game.getMeasuredHeight();
                 MainActivity.this.game.init();
             }
         });
@@ -99,12 +106,26 @@ public class MainActivity extends AppCompatActivity {
 
     // Desplegar ventana dialog
     private void initialDialog() {
+        int bestScore = 0;
+        // Tomar en cuenta anterior partida
+        SharedPreferences sp = this.getSharedPreferences(GAME_SETTINGS, Context.MODE_PRIVATE);
+        if (sp != null) {
+            bestScore = sp.getInt(BEST_SCORE, 0);
+        }
+
+        MainActivity.txtBest.setText(bestScore + "");
+
+        dialogScore = new Dialog(this);
+        dialogScore.setContentView(R.layout.dialog_start);
+        txtDialogScore = dialogScore.findViewById(R.id.txt_dialog_score);
+        txtDialogBest = dialogScore.findViewById(R.id.txt_dialog_best_score);
+        txtDialogBest.setText(bestScore + "");
+        dialogScore.setCanceledOnTouchOutside(false);
 
         Button rl_start = dialogScore.findViewById(R.id.rl_start);
         // Cuando pulse el botón de start resetear el game.
         rl_start.setOnClickListener(v -> {
-            setSinglePlayerGame();
-            game.reset();
+            game.reset(0);
             dialogScore.dismiss();
         });
 
@@ -118,69 +139,75 @@ public class MainActivity extends AppCompatActivity {
         dialogScore.show();
     }
 
-    private void setSinglePlayerGame(){
-        int bestScore = 0;
-        // Tomar en cuenta anterior partida
-        SharedPreferences sp = this.getSharedPreferences(GAME_SETTINGS, Context.MODE_PRIVATE);
-        if(sp!=null){
-            bestScore = sp.getInt(BEST_SCORE,0);
-        }
-
-        MainActivity.txtBest.setText(bestScore+"");
-
-        dialogScore = new Dialog(this);
-        dialogScore.setContentView(R.layout.dialog_start);
-        txtDialogScore = dialogScore.findViewById(R.id.txt_dialog_score);
-        txtDialogBest = dialogScore.findViewById(R.id.txt_dialog_best_score);
-        txtDialogBest.setText(bestScore + "");
-        dialogScore.setCanceledOnTouchOutside(false);
-    }
-
     // Desplegar ventana rooms
     private void dialogRooms() {
         host = false;
+
         dialogRooms = new Dialog(this);
         dialogRooms.setContentView(R.layout.activity_rooms);
 
+        AdapterRoomList adapter2 = new AdapterRoomList(context, new ArrayList());
+        list = dialogRooms.findViewById(R.id.list_rooms);
+        list.setAdapter(adapter2);
+
         // Snapshot listener collections rooms
         registration = FirebaseFirestore.getInstance().collection("rooms")
-            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                    // Si existe un error
-                    if (e != null) {
-                        Log.e(TAG, "onEvent: ", e);
-                        return;
-                    }
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        // Si existe un error
+                        System.out.println("snapshot");
 
-                    AdapterRoomList adapter2 = new AdapterRoomList(context, new ArrayList());
-                    list = dialogRooms.findViewById(R.id.list_rooms);
-                    list.setAdapter(adapter2);
-
-                    // Si existen colecciones
-                    if (queryDocumentSnapshots != null) {
-                        mAdapter = new ArrayList(); // Inicializar adaptador
-                        Rlist match;
-                        List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
-                        for (DocumentSnapshot snapshot : snapshotList) {
-
-                            // Añadir nuevo elemento al ListView
-                            match = new Rlist();
-                            match.setCod(snapshot.getId());
-                            match.setState((String) snapshot.getData().get("state"));
-                            match.setPlayers(((List<Object>) snapshot.getData().get("players")).size());
-                            mAdapter.add(match);
-                            adapter2 = new AdapterRoomList(context, mAdapter);
-                            list = dialogRooms.findViewById(R.id.list_rooms);
-                            list.setAdapter(adapter2);
-
-                            itemTouch();
+                        if (e != null) {
+                            Log.e(TAG, "onEvent: ", e);
+                            return;
                         }
-                    } else {
-                        Log.e(TAG, "onEvent: query snapshot was null");
+
+                        AdapterRoomList adapter2 = new AdapterRoomList(context, new ArrayList());
+                        list = dialogRooms.findViewById(R.id.list_rooms);
+                        list.setAdapter(adapter2);
+
+                        // Si existen colecciones
+                        if (queryDocumentSnapshots != null) {
+                            mAdapter = new ArrayList(); // Inicializar adaptador
+
+                            List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
+                            numRooms = snapshotList.size();
+                            for (DocumentSnapshot snapshot : snapshotList) {
+                                System.out.println("aquí:" + snapshot.getId());
+                                FirebaseFirestore.getInstance().collection("rooms").
+                                        document(snapshot.getId()).collection("players").
+                                        get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            // Añadir nuevo elemento al ListView
+                                            numPlayer = task.getResult().size();
+                                            match = new Rlist();
+                                            match.setCod(snapshot.getId());
+                                            match.setState((String) snapshot.getData().get("state"));
+
+                                            match.setPlayers(numPlayer);
+                                            mAdapter.add(match);
+                                            if (numRooms == 1) {
+                                                AdapterRoomList adapter2 = new AdapterRoomList(context, mAdapter);
+                                                list = dialogRooms.findViewById(R.id.list_rooms);
+                                                list.setAdapter(adapter2);
+                                                itemTouch();
+                                            } else {
+                                                numRooms = numRooms - 1;
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                            }
+                        } else {
+                            Log.e(TAG, "onEvent: query snapshot was null");
+                        }
                     }
-                }
-            });
+                });
 
         Button rl_new_room = dialogRooms.findViewById(R.id.rl_new_room);
 
@@ -188,24 +215,25 @@ public class MainActivity extends AppCompatActivity {
         rl_new_room.setOnClickListener(v -> {
             registration.remove();  // Eliminar snapshot listener
             String id = FirebaseFirestore.getInstance().collection("rooms").document().getId();
-            Room newRoom = new Room("En espera");
+            Map<String, Object> fields = new HashMap<>();
+            fields.put("state", "En espera");
 
             // Insertar nuevo documento de sala
             FirebaseFirestore.getInstance().collection("rooms").document(id)
-                .set(newRoom)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        host = true;
-                        dialogGame(id); // Mostrar diálogo de juego
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
+                    .set(fields)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            host = true;
+                            dialogGame(id); // Mostrar diálogo de juego
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error writing document", e);
+                        }
+                    });
         });
 
         dialogRooms.show();
@@ -219,13 +247,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Si existen dos jugadores
-                if(mAdapter.get(position).getPlayers() == 2){
+                if (mAdapter.get(position).getPlayers() == 2) {
                     // Mostrar alerta de capacidad
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage("Capacidad de jugadores alcanzada").setTitle("Alert Dialog");
-                    builder.setNeutralButton("Entendido", new DialogInterface.OnClickListener(){
+                    builder.setNeutralButton("Entendido", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i){
+                        public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
                         }
                     });
@@ -234,19 +262,9 @@ public class MainActivity extends AppCompatActivity {
                     dialog.show();
                 }
                 // Si existe un sólo jugador
-                if(mAdapter.get(position).getPlayers() == 1){
-                    // Actualizar documento
-                    DocumentReference roomRef = FirebaseFirestore.getInstance()
-                            .collection("rooms")
-                            .document(mAdapter.get(position).getCod());
-                    // Actualizar array
-                    roomRef.update("players", FieldValue.arrayUnion(new Player(2,0,0,0)));
-                    // Actualizar estado
-                    roomRef.update("state","Sala preparada");
-                    // Eliminar snapshot listener
-                    registration.remove();
+                if (mAdapter.get(position).getPlayers() == 1) {
                     host = false;
-                    // Mostrar diálogo de juego
+                    registration.remove();
                     dialogGame(mAdapter.get(position).getCod());
                 }
             }
@@ -255,15 +273,72 @@ public class MainActivity extends AppCompatActivity {
 
     // Desplegar ventana de juego
     private void dialogGame(String code) {
+        dialogRooms.dismiss();
+        System.out.println("game");
+        roomCode = code; // Guardar código de la partida
+
         dialogGame = new Dialog(this);
         dialogGame.setCanceledOnTouchOutside(false);
         dialogGame.setContentView(R.layout.dialog_room);
-        dialogRooms.dismiss();
 
-        // Cambio estado de la sala
         TextView txtState = dialogGame.findViewById(R.id.txt_rol);
         txtState.setText(host ? "Host" : "Inv");
 
+        FirebaseFirestore.getInstance().collection("rooms").document(roomCode).
+                collection("players").document(host ? "1" : "2").set(new Player(0, 0, 0))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        setSnapshotRoom(roomCode);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+
+        DocumentReference docRef = FirebaseFirestore.getInstance().collection("rooms").document(roomCode);
+        docRef.update("state", host ? "En espera" : "Partida lista");
+
+        dialogGame.show();
+
+        // Comenzar partida multijugador
+        Button start = dialogGame.findViewById(R.id.room_start);
+        start.setOnClickListener(v -> {
+            FirebaseFirestore.getInstance().collection("rooms").document(roomCode)
+                    .collection("players").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> players) {
+                    dialogScore.dismiss();
+                    dialogGame.dismiss();
+                    room.remove();
+                    game.setInfoGame(players.getResult(), roomCode, host);
+                    game.reset(1);
+                }
+            });
+        });
+
+        // Eliminar partida si se sale
+        Button exit = dialogGame.findViewById(R.id.room_exit);
+        exit.setOnClickListener(v -> {
+            alertDialogDelete();
+        });
+
+        dialogGame.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == 1) {
+                    alertDialogDelete();
+                }
+                return true;
+            }
+        });
+
+    }
+
+    private void setSnapshotRoom(String code) {
         // Snapshopt listener de cambios de la sala
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("rooms").document(code);
         room = docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -275,13 +350,13 @@ public class MainActivity extends AppCompatActivity {
                     Log.w(TAG, "Listen failed.", e);
                     return;
                 }
-                if(snapshot.getData() == null){
+                if (snapshot.getData() == null) {
                     // Mostrar alerta de capacidad
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage("Partida finalizada").setTitle("Alert Dialog");
-                    builder.setNeutralButton("Entendido", new DialogInterface.OnClickListener(){
+                    builder.setNeutralButton("Entendido", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i){
+                        public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
                             room.remove();
                             dialogGame.dismiss();
@@ -294,16 +369,15 @@ public class MainActivity extends AppCompatActivity {
 
                 // Si existe un cambio
                 if (snapshot != null && snapshot.exists()) {
-                    gameInfo = snapshot;
 
                     // Cambio nombre de la sala
                     TextView txtCode = dialogGame.findViewById(R.id.txt_room_play_code);
-                    txtCode.setText(snapshot.getId().substring(0,4).toUpperCase(Locale.ROOT));
+                    txtCode.setText(snapshot.getId().substring(0, 4).toUpperCase(Locale.ROOT));
 
                     // Cambio estado de la sala
+
                     TextView txtState = dialogGame.findViewById(R.id.txt_state);
                     txtState.setText((String) snapshot.getData().get("state"));
-                    dialogGame.show();
 
                     Log.d(TAG, "Current data: " + snapshot.getData());
                 } else {
@@ -311,47 +385,29 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-        roomCode = code; // Guardar código de la partida
-
-        // Eliminar partida si se sale
-        Button exit = dialogGame.findViewById(R.id.room_exit);
-        exit.setOnClickListener(v -> {
-            alertDialogDelete();
-        });
-
-        dialogGame.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == 1) {
-                    alertDialogDelete();
-                }
-                return true;
-            }
-        });
-
     }
+
 
     private void alertDialogDelete() {
         // Mostrar alerta de confirmación
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(host ? "¿Deseas finalizar la sala?" : "¿Deseas salir de la sala?").setTitle("Alert Dialog");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i){
+            public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
-                if(host){
+                if (host) {
                     deleteRoom();
-                }else{
-                   exitRoom();
+                } else {
+                    exitRoom();
                 }
                 dialogGame.dismiss();
                 room.remove();
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i){
+            public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });
@@ -362,18 +418,32 @@ public class MainActivity extends AppCompatActivity {
 
     private void exitRoom() {
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("rooms").document(roomCode);
-        docRef.update("players", FieldValue.arrayRemove(((List<Map>) gameInfo.get("players")).get(1)));
-        docRef.update("state","En espera");
+        docRef.update("state", "En espera");
+        FirebaseFirestore.getInstance().collection("rooms").document(roomCode)
+                .collection("players").document("2").delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
     }
 
     private void deleteRoom() {
-        System.out.println(roomCode);
+
         FirebaseFirestore.getInstance().collection("rooms").document(roomCode)
             .delete()
             .addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                    FirebaseFirestore.getInstance().collection("rooms").document(roomCode).collection("players").document("1").delete();
+                    FirebaseFirestore.getInstance().collection("rooms").document(roomCode).collection("players").document("2").delete();
                 }
             })
             .addOnFailureListener(new OnFailureListener() {
@@ -383,4 +453,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
     }
+
+    /*@Override
+    protected void onStop() {
+        System.out.println("Stop");
+        if(host){
+            deleteRoom();
+        }else{
+            exitRoom();
+        }
+        super.onStop();
+    }*/
 }

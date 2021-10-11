@@ -9,10 +9,9 @@ public class Player extends Point{
     public Player() {
     }
 
-    public Player(int id, int score, int x, int y) {
+    public Player(int score, int x, int y) {
         this.x = x;
         this.y = y;
-        this.id = id;
         this.score = score;
     }
 

@@ -7,6 +7,8 @@ import android.graphics.Rect;
 import com.example.snakeproject.Game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Snake {
 
@@ -27,6 +29,8 @@ public class Snake {
 
     // Booleans para el control del movimiento
     private boolean moveUp, moveLeft, moveRight, moveDown;
+
+    private int id, score;
 
     public Snake(Bitmap bm, int x, int y, int length) {
         this.bm = bm;
@@ -383,5 +387,38 @@ public class Snake {
     public void setMoveDown(boolean moveDown) {
         this.movements();
         this.moveDown = moveDown;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public Map getSnake(){
+        Map<String, Object> snakeMap = new HashMap();
+        snakeMap.put("score",score);
+        snakeMap.put("x", Math.max((body.get(0).getX() / Game.size), 0));
+        snakeMap.put("y", Math.max(((body.get(0).getY() - 27) / Game.size), 0));
+        return snakeMap;
+    }
+
+    public Map getPredSnake(){
+        Map<String, Object> snakeMap = new HashMap();
+        snakeMap.put("id",id);
+        snakeMap.put("score",score);
+        snakeMap.put("x", 0);
+        snakeMap.put("y", 0);
+        return snakeMap;
     }
 }
