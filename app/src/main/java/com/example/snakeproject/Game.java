@@ -151,12 +151,14 @@ public class Game extends View {
             //Creación del Snake con posición inicial en el centro del juego
             for (DocumentSnapshot player : infoGame) {
                 if (host) {
+                    System.out.println("es host");
                     if (((String) player.getId()).equals("1")) {
                         snake.setScore(((Long) player.get("score")).intValue());
                     } else {
                         setSnapshotOpponent("2");
                     }
                 } else {
+                    System.out.println("no es host");
                     if (((String) player.getId()).equals("2")) {
                         snake.setScore(((Long) player.get("score")).intValue());
                     } else {
@@ -268,7 +270,7 @@ public class Game extends View {
             if (modGame == 1 && isPlaying) {
                 snake.setScore(snake.getScore() + 1);
 
-                DocumentReference docRef = FirebaseFirestore.getInstance().collection("rooms").document(roomCode).collection("players").document("1");
+                DocumentReference docRef = FirebaseFirestore.getInstance().collection("rooms").document(roomCode).collection("players").document(host ? "1" : "2");
                 docRef.update("d", snake.direction(),
                         "score", snake.getScore(),
                         "x", Math.max((snake.getBody().get(0).getX() / Game.size), 0),
