@@ -19,6 +19,7 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,18 +29,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.HttpsCallableReference;
-import com.google.firebase.functions.HttpsCallableResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,14 +46,15 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     // TAG LOGCAT
-    private static final String TAG = "firestore";
+    public static final String TAG = "firestore";
 
     // STORAGE VARIABLES
     public static final String GAME_SETTINGS = "games";
     public static final String BEST_SCORE = "best";
 
     public static Dialog dialogScore, dialogRooms, dialogGame;
-    public static TextView txtScore, txtBest, txtDialogScore, txtDialogBest;
+    public static TextView txtScore1, txtScore2, txtDialogScore, txtDialogBest, hostScore, invitedScore;
+    public static ImageView imgview1, imgview2;
     public Game game;
 
     // LIST ITEMS
@@ -69,9 +66,9 @@ public class MainActivity extends AppCompatActivity {
     public String roomCode;
     public boolean host = false;
     public DocumentSnapshot gameInfo;
-    public int numPlayer = 0;
     public Rlist match;
     public int numRooms = 0;
+    public int numPlayers = 0;
 
     // STOP SNAPSHOTS
     public static ListenerRegistration registration, room;
@@ -99,8 +96,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        txtScore = findViewById(R.id.txtScore);
-        txtBest = findViewById(R.id.txtBest);
+        txtScore1 = findViewById(R.id.txtScore);
+        txtScore2 = findViewById(R.id.txtBest);
+        imgview1 = findViewById(R.id.icon1);
+        imgview2 = findViewById(R.id.icon2);
         initialDialog();
     }
 
@@ -113,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             bestScore = sp.getInt(BEST_SCORE, 0);
         }
 
-        MainActivity.txtBest.setText(bestScore + "");
+        MainActivity.txtScore2.setText(bestScore + "");
 
         dialogScore = new Dialog(this);
         dialogScore.setContentView(R.layout.dialog_start);
@@ -156,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         // Si existe un error
-                        System.out.println("snapshot");
 
                         if (e != null) {
                             Log.e(TAG, "onEvent: ", e);
@@ -173,8 +171,8 @@ public class MainActivity extends AppCompatActivity {
 
                             List<DocumentSnapshot> snapshotList = queryDocumentSnapshots.getDocuments();
                             numRooms = snapshotList.size();
+
                             for (DocumentSnapshot snapshot : snapshotList) {
-                                System.out.println("aquí:" + snapshot.getId());
                                 FirebaseFirestore.getInstance().collection("rooms").
                                         document(snapshot.getId()).collection("players").
                                         get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -182,12 +180,10 @@ public class MainActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         if (task.isSuccessful()) {
                                             // Añadir nuevo elemento al ListView
-                                            numPlayer = task.getResult().size();
                                             match = new Rlist();
                                             match.setCod(snapshot.getId());
                                             match.setState((String) snapshot.getData().get("state"));
-
-                                            match.setPlayers(numPlayer);
+                                            match.setPlayers(((Long) snapshot.getData().get("numPlayers")).intValue());
                                             mAdapter.add(match);
                                             if (numRooms == 1) {
                                                 AdapterRoomList adapter2 = new AdapterRoomList(context, mAdapter);
@@ -217,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
             String id = FirebaseFirestore.getInstance().collection("rooms").document().getId();
             Map<String, Object> fields = new HashMap<>();
             fields.put("state", "En espera");
+            fields.put("numPlayers", 0);
 
             // Insertar nuevo documento de sala
             FirebaseFirestore.getInstance().collection("rooms").document(id)
@@ -274,21 +271,27 @@ public class MainActivity extends AppCompatActivity {
     // Desplegar ventana de juego
     private void dialogGame(String code) {
         dialogRooms.dismiss();
-        System.out.println("game");
+
         roomCode = code; // Guardar código de la partida
 
         dialogGame = new Dialog(this);
         dialogGame.setCanceledOnTouchOutside(false);
         dialogGame.setContentView(R.layout.dialog_room);
 
+        hostScore = dialogGame.findViewById(R.id.hostScore);
+        invitedScore = dialogGame.findViewById(R.id.invitedScore);
+
         TextView txtState = dialogGame.findViewById(R.id.txt_rol);
         txtState.setText(host ? "Host" : "Inv");
 
         FirebaseFirestore.getInstance().collection("rooms").document(roomCode).
-                collection("players").document(host ? "1" : "2").set(new Player(0, 0, 0))
+                collection("players").document(host ? "1" : "2").set(new Player(0, 0, 0, "N"))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        DocumentReference docRef = FirebaseFirestore.getInstance().collection("rooms").document(roomCode);
+                        docRef.update("state", host ? "En espera" : "Partida lista", "numPlayers", host ? 1 : 2);
+                        numPlayers = 1;
                         setSnapshotRoom(roomCode);
                     }
                 })
@@ -299,25 +302,40 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        DocumentReference docRef = FirebaseFirestore.getInstance().collection("rooms").document(roomCode);
-        docRef.update("state", host ? "En espera" : "Partida lista");
-
         dialogGame.show();
 
         // Comenzar partida multijugador
         Button start = dialogGame.findViewById(R.id.room_start);
         start.setOnClickListener(v -> {
-            FirebaseFirestore.getInstance().collection("rooms").document(roomCode)
-                    .collection("players").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> players) {
-                    dialogScore.dismiss();
-                    dialogGame.dismiss();
-                    room.remove();
-                    game.setInfoGame(players.getResult(), roomCode, host);
-                    game.reset(1);
-                }
-            });
+            if(numPlayers == 1){
+                // Mostrar alerta de capacidad
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Falta un jugador para comenzar").setTitle("Alert Dialog");
+                builder.setNeutralButton("Entendido", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+            if(numPlayers == 2){
+                FirebaseFirestore.getInstance().collection("rooms").document(roomCode)
+                        .collection("players").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> players) {
+                        dialogScore.dismiss();
+                        dialogGame.dismiss();
+                        room.remove();
+                        game.setInfoGame(players.getResult(), roomCode, host);
+                        MainActivity.this.game.init();
+                        game.reset(1);
+                    }
+                });
+            }
+
         });
 
         // Eliminar partida si se sale
@@ -379,6 +397,8 @@ public class MainActivity extends AppCompatActivity {
                     TextView txtState = dialogGame.findViewById(R.id.txt_state);
                     txtState.setText((String) snapshot.getData().get("state"));
 
+                    numPlayers = ((Long) snapshot.getData().get("numPlayers")).intValue();
+
                     Log.d(TAG, "Current data: " + snapshot.getData());
                 } else {
                     Log.d(TAG, "Current data: null");
@@ -402,6 +422,7 @@ public class MainActivity extends AppCompatActivity {
                     exitRoom();
                 }
                 dialogGame.dismiss();
+                dialogScore.show();
                 room.remove();
             }
         });
@@ -418,7 +439,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void exitRoom() {
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("rooms").document(roomCode);
-        docRef.update("state", "En espera");
+        docRef.update("state", "En espera", "numPlayers", 1);
+
         FirebaseFirestore.getInstance().collection("rooms").document(roomCode)
                 .collection("players").document("2").delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -438,20 +460,20 @@ public class MainActivity extends AppCompatActivity {
     private void deleteRoom() {
 
         FirebaseFirestore.getInstance().collection("rooms").document(roomCode)
-            .delete()
-            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    FirebaseFirestore.getInstance().collection("rooms").document(roomCode).collection("players").document("1").delete();
-                    FirebaseFirestore.getInstance().collection("rooms").document(roomCode).collection("players").document("2").delete();
-                }
-            })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.w(TAG, "Error deleting document", e);
-                }
-            });
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        FirebaseFirestore.getInstance().collection("rooms").document(roomCode).collection("players").document("1").delete();
+                        FirebaseFirestore.getInstance().collection("rooms").document(roomCode).collection("players").document("2").delete();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
     }
 
     /*@Override

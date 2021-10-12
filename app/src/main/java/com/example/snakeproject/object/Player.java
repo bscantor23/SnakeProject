@@ -3,16 +3,17 @@ package com.example.snakeproject.object;
 import android.graphics.Point;
 
 public class Player extends Point{
-    private int id;
     private int score;
+    private String d;
 
     public Player() {
     }
 
-    public Player(int score, int x, int y) {
+    public Player(int score, int x, int y, String d) {
         this.x = x;
         this.y = y;
         this.score = score;
+        this.d = d;
     }
 
     public int getScore() {
@@ -39,11 +40,11 @@ public class Player extends Point{
         this.y = y;
     }
 
-    public int getId() {
-        return id;
+    public String getD() {
+        return d;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setD(String d) {
+        this.d = d;
     }
 }

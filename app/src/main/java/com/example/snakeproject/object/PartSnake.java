@@ -11,11 +11,21 @@ public class PartSnake extends Point {
 
     //Creación de rectángulos para lógica de intersección
     private Rect rBody, rTop, rBottom, rRight, rLeft;
+    private int id;
 
-    public PartSnake(Bitmap bm, int x, int y) {
+    public PartSnake(Bitmap bm, int x, int y, int id) {
         this.bm = bm;
         this.x = x;
         this.y = y;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Bitmap getBm() {

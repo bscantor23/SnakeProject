@@ -6,8 +6,10 @@ import android.graphics.Rect;
 
 import com.example.snakeproject.Game;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Snake {
@@ -36,14 +38,81 @@ public class Snake {
         this.bm = bm;
         this.length = length;
 
-        // Cantidad de elementos a escoger en los sprites
+        this.setBitmaps(bm);
+
+        // Al inicializar se setea que la snake comience hacia la derecha
+        moveRight = true;
+
+        // Partes del cuerpo en dirección de la derecha
+        body.add(new PartSnake(bmHeadRight, x, y, 1));
+        for (int i = 1; i < length - 1; i++) {
+            this.body.add(new PartSnake(bmBodyHorizontal, this.body.get(i - 1).getX() - Game.size, y, 13));
+        }
+        body.add(new PartSnake(bmTailRight, body.get(length - 2).getX() - Game.size, body.get(length - 2).getY(), 5));
+    }
+
+    public Snake(Bitmap bm, List<Map> parts) {
+        this.bm = bm;
+        this.length = parts.size();
+        this.setBitmaps(bm);
+        Bitmap b = null;
+        for (Map el : parts) {
+            switch (((Long) el.get("bitmap")).intValue()) {
+                case 1:
+                    b = bmHeadRight;
+                    break;
+                case 2:
+                    b = bmHeadDown;
+                    break;
+                case 3:
+                    b = bmHeadLeft;
+                    break;
+                case 4:
+                    b = bmHeadUp;
+                    break;
+                case 5:
+                    b = bmTailRight;
+                    break;
+                case 6:
+                    b = bmTailDown;
+                    break;
+                case 7:
+                    b = bmTailLeft;
+                    break;
+                case 8:
+                    b = bmTailUp;
+                    break;
+                case 9:
+                    b = bmBodyBottomRight;
+                    break;
+                case 10:
+                    b = bmBodyBottomLeft;
+                    break;
+                case 11:
+                    b = bmBodyTopLeft;
+                    break;
+                case 12:
+                    b = bmBodyTopRight;
+                    break;
+                case 13:
+                    b = bmBodyHorizontal;
+                    break;
+                case 14:
+                    b = bmBodyVertical;
+                    break;
+            }
+
+            this.body.add(new PartSnake(b, ((Long) el.get("x")).intValue(), ((Long) el.get("y")).intValue(), ((Long) el.get("bitmap")).intValue()));
+        }
+    }
+
+    public void setBitmaps(Bitmap bm) {
         int w = bm.getWidth() / 5;
         int h = bm.getHeight() / 4;
-
         // Elementos de la primera fila de los sprites
         bmBodyBottomRight = Bitmap.createBitmap(bm, 0, 0, w, h);
-        bmBodyHorizontal = Bitmap.createBitmap(bm,  w, 0, w, h);
-        bmBodyBottomLeft = Bitmap.createBitmap(bm, 2 * w,  0, w, h);
+        bmBodyHorizontal = Bitmap.createBitmap(bm, w, 0, w, h);
+        bmBodyBottomLeft = Bitmap.createBitmap(bm, 2 * w, 0, w, h);
         bmHeadUp = Bitmap.createBitmap(bm, 3 * w, 0, w, h);
         bmHeadRight = Bitmap.createBitmap(bm, 4 * w, 0, w, h);
 
@@ -61,16 +130,6 @@ public class Snake {
         // Elementos de la cuarta fila de los sprites
         bmTailLeft = Bitmap.createBitmap(bm, 3 * w, 3 * h, w, h);
         bmTailDown = Bitmap.createBitmap(bm, 4 * w, 3 * h, w, h);
-
-        // Al inicializar se setea que la snake comience hacia la derecha
-        moveRight = true;
-
-        // Partes del cuerpo en dirección de la derecha
-        body.add(new PartSnake(bmHeadRight, x, y));
-        for (int i = 1; i < length - 1; i++) {
-            this.body.add(new PartSnake(bmBodyHorizontal, this.body.get(i - 1).getX() - Game.size, y));
-        }
-        body.add(new PartSnake(bmTailRight, body.get(length - 2).getX() - Game.size, body.get(length - 2).getY()));
     }
 
     public void addPart() {
@@ -79,20 +138,21 @@ public class Snake {
 
         // Si la dirección era derecha
         if (tail.getBm() == bmTailRight) {
-            this.body.add(new PartSnake(bmTailRight, tail.getX() - Game.size, tail.getY()));
+            this.body.add(new PartSnake(bmTailRight, tail.getX() - Game.size, tail.getY(), 5));
 
-        // Si la dirección era izquierda
-        } else if (tail.getBm() == bmTailLeft) {
-            this.body.add(new PartSnake(bmTailLeft, tail.getX() + Game.size, tail.getY()));
-
-        // Si la dirección era arriba
-        } else if (tail.getBm() == bmTailUp) {
-            this.body.add(new PartSnake(bmTailUp, tail.getX(), tail.getY() + Game.size));
-
-        // Si la dirección era abajo
+            // Si la dirección era abajo
         } else if (tail.getBm() == bmTailDown) {
-            this.body.add(new PartSnake(bmTailUp, tail.getX(), tail.getY() - Game.size));
+            this.body.add(new PartSnake(bmTailDown, tail.getX(), tail.getY() - Game.size, 6));
+
+            // Si la dirección era izquierda
+        } else if (tail.getBm() == bmTailLeft) {
+            this.body.add(new PartSnake(bmTailLeft, tail.getX() + Game.size, tail.getY(), 7));
+
+            // Si la dirección era arriba
+        } else if (tail.getBm() == bmTailUp) {
+            this.body.add(new PartSnake(bmTailUp, tail.getX(), tail.getY() + Game.size, 8));
         }
+
     }
 
     public void updateMovement() {
@@ -107,15 +167,19 @@ public class Snake {
         if (moveRight) {
             body.get(0).setX(body.get(0).getX() + Game.size);
             body.get(0).setBm(bmHeadRight);
+            body.get(0).setId(1);
         } else if (moveDown) {
             body.get(0).setY(body.get(0).getY() + Game.size);
             body.get(0).setBm(bmHeadDown);
-        } else if (moveUp) {
-            body.get(0).setY(body.get(0).getY() - Game.size);
-            body.get(0).setBm(bmHeadUp);
+            body.get(0).setId(2);
         } else if (moveLeft) {
             body.get(0).setX(body.get(0).getX() - Game.size);
             body.get(0).setBm(bmHeadLeft);
+            body.get(0).setId(3);
+        } else if (moveUp) {
+            body.get(0).setY(body.get(0).getY() - Game.size);
+            body.get(0).setBm(bmHeadUp);
+            body.get(0).setId(4);
         }
 
         // Movimientos del Cuerpo
@@ -131,7 +195,7 @@ public class Snake {
 
             // Validación intersección arriba
             boolean inter_top_next = body.get(i).getrTop().intersect(body.get(i + 1).getrBody());
-            boolean inter_top_prev= body.get(i).getrTop().intersect(body.get(i - 1).getrBody());
+            boolean inter_top_prev = body.get(i).getrTop().intersect(body.get(i - 1).getrBody());
 
             // Validación intersección abajo
             boolean inter_bottom_next = body.get(i).getrBottom().intersect(body.get(i + 1).getrBody());
@@ -139,44 +203,51 @@ public class Snake {
 
             // Dibujar sprites de cambio de dirección
 
-            // Si la parte del cuerpo intersecta otra parte siguiente a la izquierda y una parte previa abajo
-            // o si la parte del cuerpo intersecta otra parte siguiente abajo y una parte previa a la izquierda
-            if (inter_left_next && inter_bottom_prev || inter_bottom_next && inter_left_prev) {
-                body.get(i).setBm(bmBodyBottomLeft);
-
-            // Si la parte del cuerpo intersecta otra parte siguiente a la izquierda y una parte previa arriba
-            // o si la parte del cuerpo intersecta otra parte siguiente arriba y una parte previa a la izquierda
-            } else if (inter_left_next && inter_top_prev || inter_top_next && inter_left_prev)  {
-                body.get(i).setBm(bmBodyTopLeft);
-
-            // Si la parte del cuerpo intersecta otra parte siguiente a la derecha y una parte previa arriba
-            // o si la parte del cuerpo intersecta otra parte siguiente arriba y una parte previa a la derecha
-            } else if (inter_right_next && inter_top_prev || inter_top_next && inter_right_prev) {
-                body.get(i).setBm(bmBodyTopRight);
-
             // Si la parte del cuerpo intersecta otra parte siguiente a la derecha y una parte previa abajo
             // o si la parte del cuerpo intersecta otra parte siguiente abajo y una parte previa a la derecha
-            } else if (inter_right_next && inter_bottom_prev || inter_bottom_next && inter_right_prev) {
+            if (inter_right_next && inter_bottom_prev || inter_bottom_next && inter_right_prev) {
                 body.get(i).setBm(bmBodyBottomRight);
+                body.get(i).setId(9);
 
-            // Si la parte del cuerpo intersecta otra parte siguiente a la derecha y una parte previa a la izquierda
-            // o si la parte del cuerpo intersecta otra parte siguiente a la izquierda y una parte previa a la derecha
+                // Si la parte del cuerpo intersecta otra parte siguiente a la izquierda y una parte previa abajo
+                // o si la parte del cuerpo intersecta otra parte siguiente abajo y una parte previa a la izquierda
+            } else if (inter_left_next && inter_bottom_prev || inter_bottom_next && inter_left_prev) {
+                body.get(i).setBm(bmBodyBottomLeft);
+                body.get(i).setId(10);
+
+                // Si la parte del cuerpo intersecta otra parte siguiente a la izquierda y una parte previa arriba
+                // o si la parte del cuerpo intersecta otra parte siguiente arriba y una parte previa a la izquierda
+            } else if (inter_left_next && inter_top_prev || inter_top_next && inter_left_prev) {
+                body.get(i).setBm(bmBodyTopLeft);
+                body.get(i).setId(11);
+
+                // Si la parte del cuerpo intersecta otra parte siguiente a la derecha y una parte previa arriba
+                // o si la parte del cuerpo intersecta otra parte siguiente arriba y una parte previa a la derecha
+            } else if (inter_right_next && inter_top_prev || inter_top_next && inter_right_prev) {
+                body.get(i).setBm(bmBodyTopRight);
+                body.get(i).setId(12);
+
+                // Si la parte del cuerpo intersecta otra parte siguiente a la derecha y una parte previa a la izquierda
+                // o si la parte del cuerpo intersecta otra parte siguiente a la izquierda y una parte previa a la derecha
             } else if (inter_right_next && inter_left_prev || inter_left_next && inter_right_prev) {
                 body.get(i).setBm(bmBodyHorizontal);
+                body.get(i).setId(13);
 
-            // Si la parte del cuerpo intersecta otra parte siguiente arriba y una parte previa a la abajo
-            // o si la parte del cuerpo intersecta otra parte siguiente abajo y una parte previa a la arriba
+                // Si la parte del cuerpo intersecta otra parte siguiente arriba y una parte previa a la abajo
+                // o si la parte del cuerpo intersecta otra parte siguiente abajo y una parte previa a la arriba
             } else if (inter_top_next && inter_bottom_prev || inter_bottom_next && inter_top_prev) {
                 body.get(i).setBm(bmBodyVertical);
-
+                body.get(i).setId(14);
             } else {
                 // Si el movimiento es horizontal
                 if (moveRight || moveLeft) {
                     body.get(i).setBm(bmBodyHorizontal);
+                    body.get(i).setId(13);
 
-                // Si el movimiento es vertical
-                }  else if (moveUp || moveDown) {
+                    // Si el movimiento es vertical
+                } else if (moveUp || moveDown) {
                     body.get(i).setBm(bmBodyVertical);
+                    body.get(i).setId(14);
                 }
             }
         }
@@ -187,18 +258,22 @@ public class Snake {
         // Si la cola intersecta con la anterior parte a la derecha
         if (body.get(length - 1).getrRight().intersect(beforeTail)) {
             body.get(length - 1).setBm(bmTailRight);
+            body.get(length - 1).setId(5);
 
-        // Si la cola intersecta con la anterior parte a la izquierda
-        } else if (body.get(length - 1).getrLeft().intersect(beforeTail)) {
-            body.get(length - 1).setBm(bmTailLeft);
-
-        // Si la cola intersecta con la anterior parte abajo
+            // Si la cola intersecta con la anterior parte abajo
         } else if (body.get(length - 1).getrBottom().intersect(beforeTail)) {
             body.get(length - 1).setBm(bmTailDown);
+            body.get(length - 1).setId(6);
 
-        // Si la cola intersecta con la anterior parte arriba
+            // Si la cola intersecta con la anterior parte a la izquierda
+        } else if (body.get(length - 1).getrLeft().intersect(beforeTail)) {
+            body.get(length - 1).setBm(bmTailLeft);
+            body.get(length - 1).setId(7);
+
+            // Si la cola intersecta con la anterior parte arriba
         } else if (body.get(length - 1).getrTop().intersect(beforeTail)) {
             body.get(length - 1).setBm(bmTailUp);
+            body.get(length - 1).setId(8);
         }
     }
 
@@ -341,6 +416,18 @@ public class Snake {
         return body;
     }
 
+    public List<Map> getBodyMap() {
+        List<Map> r = new ArrayList<Map>();
+        for (PartSnake part : body) {
+            Map<String, Object> element = new HashMap<>();
+            element.put("x", part.getX());
+            element.put("y", part.getY());
+            element.put("bitmap", part.getId());
+            r.add(element);
+        }
+        return r;
+    }
+
     public void setBody(ArrayList<PartSnake> body) {
         this.body = body;
     }
@@ -405,20 +492,21 @@ public class Snake {
         this.score = score;
     }
 
-    public Map getSnake(){
-        Map<String, Object> snakeMap = new HashMap();
-        snakeMap.put("score",score);
-        snakeMap.put("x", Math.max((body.get(0).getX() / Game.size), 0));
-        snakeMap.put("y", Math.max(((body.get(0).getY() - 27) / Game.size), 0));
-        return snakeMap;
+
+    public String direction() {
+        if (moveDown) {
+            return "D";
+        }
+        if (moveRight) {
+            return "R";
+        }
+        if (moveLeft) {
+            return "L";
+        }
+        if (moveUp) {
+            return "U";
+        }
+        return "N";
     }
 
-    public Map getPredSnake(){
-        Map<String, Object> snakeMap = new HashMap();
-        snakeMap.put("id",id);
-        snakeMap.put("score",score);
-        snakeMap.put("x", 0);
-        snakeMap.put("y", 0);
-        return snakeMap;
-    }
 }

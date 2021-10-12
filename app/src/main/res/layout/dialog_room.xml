@@ -78,12 +78,12 @@
                             android:orientation="vertical"
                             android:layout_centerInParent="true">
                             <ImageView
-                                android:src="@drawable/manzana"
+                                android:src="@drawable/snake"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:scaleType="fitXY"/>
                             <TextView
-                                android:id="@+id/txt_dialog_score"
+                                android:id="@+id/hostScore"
                                 android:textSize="25sp"
                                 android:text="0"
                                 android:textColor="#ffffff"
@@ -102,13 +102,12 @@
                             android:orientation="vertical"
                             android:layout_centerInParent="true">
                             <ImageView
-                                android:src="@drawable/insignia"
-                                app:tint="#fff0"
+                                android:src="@drawable/snake2"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:scaleType="fitXY"/>
                             <TextView
-                                android:id="@+id/txt_dialog_best_score"
+                                android:id="@+id/invitedScore"
                                 android:textSize="25sp"
                                 android:text="0"
                                 android:textColor="#ffffff"

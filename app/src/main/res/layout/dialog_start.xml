@@ -75,7 +75,6 @@
                             android:layout_centerInParent="true">
                             <ImageView
                                 android:src="@drawable/insignia"
-                                app:tint="#fff0"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:scaleType="fitXY"/>

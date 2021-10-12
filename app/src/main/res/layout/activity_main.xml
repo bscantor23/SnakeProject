@@ -26,10 +26,11 @@
         android:padding="12dp">
 
         <ImageView
+            android:id="@+id/icon1"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/manzana"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/manzana" />
 
         <TextView
             android:id="@+id/txtScore"
@@ -43,10 +44,11 @@
             android:layout_height="wrap_content" />
 
         <ImageView
+            android:id="@+id/icon2"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/insignia"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/insignia" />
 
         <TextView
             android:id="@+id/txtBest"
