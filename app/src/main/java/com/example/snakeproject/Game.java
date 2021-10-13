@@ -40,10 +40,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Game extends View {
 
-    public final int DELAY = 200;
+    public static int DELAY = 200;
 
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
@@ -53,7 +55,7 @@ public class Game extends View {
     // Cantidad de celdas visibles y disponibles en el Game
     private int w = 12, h = 17;
 
-    private Bitmap bmGrassLight, bmGrassDark, bmSprites, bmOpSprites;
+    private Bitmap bmGrassLight, bmGrassDark, bmSprites, bmOpSprites, bmApple;
     private Grass[][] grass = new Grass[h][w];
 
     private Snake snake, opponentSnake = null;
@@ -66,6 +68,7 @@ public class Game extends View {
     private float mx, my;
 
     public static boolean isPlaying = false;
+    public static int initialMove = 0;
     public static int score = 0;
     public static int bestScore = 0;
 
@@ -75,7 +78,6 @@ public class Game extends View {
     private int modGame;
     private boolean host = true;
     private String roomCode;
-    private Boolean opponentPainted = false;
 
     public static ListenerRegistration opponent;
 
@@ -98,11 +100,14 @@ public class Game extends View {
         bmGrassDark.eraseColor(Color.parseColor("#A87854"));
 
         // Sprites dispuestos para el juego.
-        bmSprites = BitmapFactory.decodeResource(this.getResources(), host ? R.drawable.sprites : R.drawable.sprites2);
+        bmSprites = BitmapFactory.decodeResource(this.getResources(), host ? R.drawable.sprites1 : R.drawable.sprites2);
         bmSprites = Bitmap.createScaledBitmap(bmSprites, 5 * size, 4 * size, true);
 
         bmOpSprites = BitmapFactory.decodeResource(this.getResources(), host ? R.drawable.sprites2_tr : R.drawable.sprites_tr);
         bmOpSprites = Bitmap.createScaledBitmap(bmOpSprites, 5 * size, 4 * size, true);
+
+        bmApple = BitmapFactory.decodeResource(this.getResources(), R.drawable.manzana);
+        bmApple = Bitmap.createScaledBitmap(bmApple, size, size, true);
 
         reset(0);
 
@@ -112,7 +117,6 @@ public class Game extends View {
     }
 
     public void setIcons() {
-        Resources resources = getResources();
         if (modGame == 0) {
             MainActivity.imgview1.setImageResource(R.drawable.manzana);
             MainActivity.imgview2.setImageResource(R.drawable.insignia);
@@ -125,7 +129,8 @@ public class Game extends View {
 
     public void reset(int game) {
         modGame = game;
-        setIcons();
+        opponentSnake = null;
+        snake = null;
         System.gc();
 
         // Adaptación de los estilos en la matriz
@@ -148,33 +153,33 @@ public class Game extends View {
         }
 
         if (modGame == 1 && infoGame != null) {
+            MainActivity.txtScore1.setText("0");
+            MainActivity.txtScore2.setText("0");
+
             //Creación del Snake con posición inicial en el centro del juego
             for (DocumentSnapshot player : infoGame) {
                 if (host) {
-                    System.out.println("es host");
-                    if (((String) player.getId()).equals("1")) {
+                    if (player.getId().equals("1")) {
                         snake.setScore(((Long) player.get("score")).intValue());
                     } else {
                         setSnapshotOpponent("2");
                     }
                 } else {
-                    System.out.println("no es host");
-                    if (((String) player.getId()).equals("2")) {
+                    if (player.getId().equals("2")) {
                         snake.setScore(((Long) player.get("score")).intValue());
                     } else {
                         setSnapshotOpponent("1");
                     }
                 }
             }
-
-            MainActivity.txtScore1.setText("0");
-            MainActivity.txtScore2.setText("0");
+            initialMove = 0;
         }
 
         //Creación del Apple con posición inicial random
         Point random = randomApple();
-        apple = new Apple(bmSprites, grass[random.y][random.x].getX(), grass[random.y][random.x].getY());
+        apple = new Apple(bmApple, grass[random.y][random.x].getX(), grass[random.y][random.x].getY());
 
+        setIcons();
     }
 
     private void setSnapshotOpponent(String code) {
@@ -190,6 +195,10 @@ public class Game extends View {
                 if (e != null) {
                     Log.w(MainActivity.TAG, "Listen failed.", e);
                     return;
+                }
+
+                if (snapshot != null && snapshot.exists() && snapshot.getData().get("d").equals("F")) {
+                    gameOver();
                 }
 
                 // Si existe un cambio
@@ -212,6 +221,11 @@ public class Game extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        if (modGame == 1 && initialMove == 1) {
+            DELAY = 200;
+            initialMove = 2;
+        }
 
         if (size == 0) {
             return;
@@ -239,29 +253,29 @@ public class Game extends View {
                     || head.getY() < grass[0][0].getY()
                     || head.getY() + size > grass[h - 1][w - 1].getY() + size
                     || head.getX() + size > grass[h - 1][w - 1].getX() + size) {
+                if (modGame == 1) {
+                    resetMultiplayer();
+                }
                 gameOver();
             }
 
             //Validar si la cabeza toca alguna parte del cuerpo
             for (int i = 1; i < snake.getBody().size(); i++) {
                 if (head.getrBody().intersect(snake.getBody().get(i).getrBody())) {
+                    if (modGame == 1) {
+                        resetMultiplayer();
+                    }
                     gameOver();
                 }
             }
         }
 
-        // Dibujado del Snake y del Apple
-        snake.drawSnake(canvas);
-
-        if(opponentPainted == true){
-            opponentPainted = false;
-            opponentSnake = null;
-        }
 
         if (opponentSnake != null) {
             opponentSnake.drawSnake(canvas);
-            opponentPainted = true;
         }
+        // Dibujado del Snake y del Apple
+        snake.drawSnake(canvas);
         apple.draw(canvas);
 
         // Validar que la serpiente se alimenta
@@ -302,6 +316,14 @@ public class Game extends View {
 
         }
 
+        if (modGame == 1 && initialMove == 0) {
+            DELAY = 3000;
+            initialMove = 1;
+            this.snake.setMoveRight(true);
+            isPlaying = true;
+        }
+
+
         //Delay del movimiento de la Snake
         handler.postDelayed(runnable, DELAY);
     }
@@ -326,47 +348,59 @@ public class Game extends View {
     private void gameOver() {
         isPlaying = false;
         if (modGame == 0) {
+            MainActivity.txtDialogBest.setText(bestScore + "");
+            MainActivity.txtDialogScore.setText(score + "");
             MainActivity.dialogScore.show();
         } else {
-            resetMultiplayer();
+            opponent.remove();
+            FirebaseFirestore.getInstance().collection("rooms").document(roomCode)
+                    .update("state", "Partida lista");
+            MainActivity.hostScore.setText(host ? MainActivity.txtScore1.getText() : MainActivity.txtScore2.getText());
+            MainActivity.invitedScore.setText(host ? MainActivity.txtScore2.getText() : MainActivity.txtScore1.getText());
+            MainActivity.INSTANCE.setSnapshotRoom(roomCode);
             MainActivity.dialogGame.show();
         }
-
-        MainActivity.txtDialogBest.setText(bestScore + "");
-        MainActivity.txtDialogScore.setText(score + "");
     }
 
     private void resetMultiplayer() {
         FirebaseFirestore.getInstance().collection("rooms").document(roomCode).collection("players")
-                .document("1").update("score", 0, "d", "N", "x", 0, "y", 0);
-
-        MainActivity.hostScore.setText(String.valueOf(snake.getScore()));
-
+                .document(host ? "1" : "2").update("d", "F");
     }
 
     // Generar posición aleatoria de la manzana
     private Point randomApple() {
-        Point point = new Point();
-        Random r = new Random();
-        point.y = r.nextInt(h - 1);
-        point.x = r.nextInt(w - 1);
-        Grass current = grass[point.y][point.x];
+        try {
+            Point point = new Point();
+            Random r = new Random();
+            point.y = r.nextInt(h - 1);
+            point.x = r.nextInt(w - 1);
 
-        // Algoritmo para verificar que la nueva posición de la manzana no tenga una parte del cuerpo de la serpiente
-        Rect rect = new Rect(current.getX(), current.getY(), current.getX() + size, current.getY() + size);
-        boolean check = true;
-        while (check) {
-            check = false;
-            for (int i = 0; i < snake.getBody().size(); i++) {
-                if (rect.intersect(snake.getBody().get(i).getrBody())) {
-                    check = true;
-                    point.y = r.nextInt(h - 1);
-                    point.x = r.nextInt(w - 1);
-                    rect = new Rect(current.getX(), current.getY(), current.getX() + size, current.getY() + size);
+            Grass current = grass[point.y][point.x];
+            // Algoritmo para verificar que la nueva posición de la manzana no tenga una parte del cuerpo de la serpiente
+            Rect rect = new Rect(current.getX(), current.getY(), current.getX() + size, current.getY() + size);
+            boolean check = true;
+
+            while (check) {
+                check = false;
+                for (int i = 0; i < snake.getBody().size(); i++) {
+                    if (rect.intersect(snake.getBody().get(i).getrBody())) {
+                        System.out.println("intersectó");
+                        check = true;
+                        point.y = r.nextInt(h - 1);
+                        point.x = r.nextInt(w - 1);
+                        System.out.println("ciclo:" + point);
+                        current = grass[point.y][point.x];
+                        rect = new Rect(current.getX(), current.getY(), current.getX() + size, current.getY() + size);
+                    } else {
+                        check = false;
+                    }
                 }
             }
+            return point;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Point(0, 0);
         }
-        return point;
     }
 
     @Override
@@ -427,5 +461,13 @@ public class Game extends View {
         this.infoGame = infoGame;
         this.host = host;
         this.roomCode = roomCode;
+    }
+
+    public boolean isHost() {
+        return host;
+    }
+
+    public void setHost(boolean host) {
+        this.host = host;
     }
 }

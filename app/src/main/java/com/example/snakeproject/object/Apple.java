@@ -14,12 +14,7 @@ public class Apple extends Point {
     public Apple(Bitmap bm, int x, int y) {
         this.x = x;
         this.y = y;
-
-        //Width and Height Sprites
-        int w = bm.getWidth() / 5;
-        int h = bm.getHeight() / 4;
-
-        this.bm = Bitmap.createBitmap(bm, 0, 3*h, w, h);
+        this.bm = bm;
     }
 
     public void draw(Canvas canvas) {
